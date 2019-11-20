@@ -21,3 +21,7 @@
 ## Others:
 1.	截图功能
 2.	保存游戏数据、读取游戏数据
+
+
+## 参考链接
+https://blog.csdn.net/Mahabharata_/article/details/55505403
