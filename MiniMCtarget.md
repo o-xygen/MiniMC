@@ -6,7 +6,7 @@
 3.	存在重力加速度
 4.	不存在摩擦力、空气阻力等概念，玩家移动便是直接移动
 5.	加入射线碰撞的检测，以获得某点打出的射线所触及的物件（用于检测玩家点击屏幕所操作的对象）
-总之，可以将全部物件都处理成等大小的正方体
+  总之，可以将全部物件都处理成等大小的正方体
 
 ## Renderering:
 1.	暂时不制作天空盒，天空背景做蓝，根据实际测试的运行效率决定，使用贴图云朵或者方块堆叠云朵，可以不移动
@@ -19,10 +19,10 @@
 2.	视剩余时间决定是否添加篝火的光源特效、封闭空间的大AO、物件边缘的lightap式AO与物件贴图本身的AO
 
 ## Others:
-1.	截图功能
-2.	保存游戏数据、读取游戏数据
-
+1. 截图功能
+2. 保存游戏数据、读取游戏数据
 
 ## 参考链接
 1.  https://blog.csdn.net/Mahabharata_/article/details/55505403
 2.  https://github.com/fogleman/Craft
+3.   This project maybe intuitive for both startup and carry on: <https://github.com/Hopson97/MineCraft-One-Week-Challenge>
