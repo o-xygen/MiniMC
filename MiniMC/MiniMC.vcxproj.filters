@@ -22,6 +22,12 @@
     <Filter Include="头文件\basic_objs">
       <UniqueIdentifier>{a893b505-a116-499a-a70c-3da8051bb048}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\basic_objs">
+      <UniqueIdentifier>{eae0c59d-4b15-417c-9efc-ebd4333b1d69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\utils">
+      <UniqueIdentifier>{ba00bcbc-d44c-48d6-8138-1f5dfdce2a51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniMC.cpp">
@@ -38,6 +44,12 @@
     </ClCompile>
     <ClCompile Include="stb_image.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="demoBlock.cpp">
+      <Filter>源文件\basic_objs</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>源文件\utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
