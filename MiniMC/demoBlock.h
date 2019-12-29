@@ -3,6 +3,7 @@
 #include "Shader.h"
 class DemoBlock {
 public:
+    double position[3];
     DemoBlock();
 
     void draw();

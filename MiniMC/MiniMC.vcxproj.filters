@@ -28,6 +28,24 @@
     <Filter Include="源文件\utils">
       <UniqueIdentifier>{ba00bcbc-d44c-48d6-8138-1f5dfdce2a51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Physics">
+      <UniqueIdentifier>{83758945-7bd7-431e-adc3-ecbd7d9d1c1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Physics">
+      <UniqueIdentifier>{b0d5601f-f6b8-444f-8cba-127cd9ce6ec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Physics\DataType">
+      <UniqueIdentifier>{b5206d91-d611-4f35-87ea-c5addf371f6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Physics\DataType">
+      <UniqueIdentifier>{63770284-ed94-4ed6-8292-1671ebfb064f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\GameLogic">
+      <UniqueIdentifier>{742a89a0-de2e-43ba-a49e-f2974483a876}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\GameLogic">
+      <UniqueIdentifier>{89c68bef-221b-481b-b263-ab27e80fa960}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniMC.cpp">
@@ -51,6 +69,15 @@
     <ClCompile Include="utils.cpp">
       <Filter>源文件\utils</Filter>
     </ClCompile>
+    <ClCompile Include="PhysicsFunction.cpp">
+      <Filter>源文件\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsCube.cpp">
+      <Filter>源文件\Physics\DataType</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>源文件\Physics\DataType</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -67,6 +94,18 @@
     </ClInclude>
     <ClInclude Include="demoBlock.h">
       <Filter>头文件\basic_objs</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsFunction.h">
+      <Filter>头文件\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsCube.h">
+      <Filter>头文件\Physics\DataType</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>头文件\Physics\DataType</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>头文件\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
