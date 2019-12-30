@@ -1,5 +1,5 @@
 #pragma once
-namespace Physics
+namespace DataType
 {
     class Vector3
     {

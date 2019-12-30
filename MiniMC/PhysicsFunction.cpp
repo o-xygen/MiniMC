@@ -1,18 +1,17 @@
-#include"DataType.h"
-#include "PhysicsCube.h"
-
+#include "CubeRoom.h"
+#include "PhysicsFunction.h"
 namespace Physics
 {
     const double gravity[3]{ 0,-5,0 };
     const double JumpVelocity[3]{ 0, 8, 0 };
-
+    using DataType::Vector3;
     static bool checkIn(const Vector3& point, const Vector3& minBound, const Vector3& maxBound)
     {
 #define clamp(x, y, z) (x <= y && y <= z)
         return clamp(minBound.x, point.x, maxBound.x) && clamp(minBound.y, point.y, maxBound.y) && clamp(minBound.z, point.z, maxBound.z);
     }
 
-    bool PhysicsFunction::doRaycast(const Vector3& startPoint, const Vector3& direction, const PhysicsUnit*& hitOne, const Vector3*& point)
+    bool PhysicsFunction::doRaycast(const Vector3& startPoint, const Vector3& direction, const PhysicsComponent*& hitOne, const Vector3*& point)
     {
         static Vector3 res;
         if (direction.x == 0 && direction.y == 0 && direction.z == 0)
@@ -26,16 +25,16 @@ namespace Physics
         Vector3 trueHitPoint[2], bound[2], *position;
 
         double minDelta = DBL_MAX;
-        for (int x = 0; x < PhysicsCube::x; ++x)
+        for (int x = 0; x < CubeRoom::x; ++x)
         {
-            for (int y = 0; y < PhysicsCube::y; ++y)
+            for (int y = 0; y < CubeRoom::y; ++y)
             {
-                for (int z = 0; z < PhysicsCube::z; ++z)
+                for (int z = 0; z < CubeRoom::z; ++z)
                 {
-                    PhysicsCube* cube = PhysicsCube::map[x][y][z];
-                    for (PhysicsUnit* unit : cube->list)
+                    CubeRoom* cube = CubeRoom::map[x][y][z];
+                    for (PhysicsComponent* unit : cube->list)
                     {
-                        position = &unit->position;
+                        position = &unit->logicObject->position;
                         bound[0] = *position - Vector3{ 0.5,0.5,0.5 };
                         bound[1] = *position + Vector3{ 0.5,0.5,0.5 };
 
