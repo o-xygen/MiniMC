@@ -157,6 +157,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="block.cpp" />
+    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="error.cpp" />
+    <ClCompile Include="LoadedTexture.cpp" />
     <ClCompile Include="PhysicsCube.cpp" />
     <ClCompile Include="PhysicsFunction.cpp" />
     <ClCompile Include="demoBlock.cpp" />
@@ -171,6 +175,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="BlockConst.h" />
+    <ClInclude Include="camera.h" />
     <ClInclude Include="error.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="LoadedTexture.h" />
@@ -188,6 +193,8 @@
   <ItemGroup>
     <None Include="shaders\demoFrag.glsl" />
     <None Include="shaders\demoVertex.glsl" />
+    <None Include="shaders\planeFrag.glsl" />
+    <None Include="shaders\planeVert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -64,7 +64,8 @@ DemoBlock::DemoBlock() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     shader = new Shader("shaders/demoVertex.glsl", "shaders/demoFrag.glsl");
-    textureID = TextureFromFile("resources/textures/log_oak.png");
+    auto info = TextureFromFile("resources/textures/log_oak.png");
+	textureID = info.ID;
 }
 
 void DemoBlock::draw() {

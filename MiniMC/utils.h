@@ -4,5 +4,11 @@
 #include <iostream>
 using std::string;
 
+struct textureInfo
+{
+	int ID;
+	int width, height;
+};
+
 unsigned int generateTexture(unsigned char* data, int width, int height, GLenum format);
-int TextureFromFile(const string& filename);
+textureInfo TextureFromFile(const string& filename);

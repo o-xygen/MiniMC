@@ -3,7 +3,10 @@
 #include <glut.h>
 #include "demoBlock.h"
 #include <iostream>
-
+#include <fstream>
+#include "json.hpp"
+#include "block.h"
+using json = nlohmann::json;
 Application* glutWrapper::app = nullptr;
 
 Application::Application(int width, int height) : windowWidth(width), windowHeight(height) {
@@ -26,6 +29,7 @@ void Application::setup(int argc, char* argv[])
 		exit(-1);
 	}
 	glEnable(GL_DEPTH_TEST);
+	initBlockMap();
 }
 
 void Application::run() {
@@ -34,9 +38,10 @@ void Application::run() {
 
 void Application::_redraw()
 {
-	static DemoBlock demoBlock;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	demoBlock.draw();
+	meshMap->render();
+	/*Block* block = BlockMap.at(GrassBlock);
+	block->draw();*/
 	glutSwapBuffers();
 }
 
@@ -48,4 +53,18 @@ void Application::_reshape(int w, int h)
 void Application::_idle()
 {
 	glutPostRedisplay();
+}
+
+void Application::initBlockMap()
+{
+	std::ifstream in("resources/models/blocks/grass_block.json");
+	json j;
+	try {
+		in >> j;
+	}
+	catch(json::parse_error e){
+		cout << e.what() << endl;
+	}
+	Block* block = new Block(j);
+	BlockMap.insert({ block->getID(), block });
 }

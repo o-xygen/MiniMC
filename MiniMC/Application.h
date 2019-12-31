@@ -11,6 +11,7 @@ private:
 	void _redraw();
 	void _reshape(int w, int h);
 	void _idle();
+	void initBlockMap();
 	friend glutWrapper;
 
 	MeshMap* meshMap;

@@ -78,6 +78,18 @@
     <ClCompile Include="Vector3.cpp">
       <Filter>源文件\Physics\DataType</Filter>
     </ClCompile>
+    <ClCompile Include="error.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadedTexture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="block.cpp">
+      <Filter>源文件\basic_objs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -107,9 +119,6 @@
     <ClInclude Include="Physics.h">
       <Filter>头文件\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="json.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="noise.h">
       <Filter>头文件\utils</Filter>
     </ClInclude>
@@ -128,12 +137,24 @@
     <ClInclude Include="LoadedTexture.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\demoFrag.glsl">
       <Filter>源文件\shaders</Filter>
     </None>
     <None Include="shaders\demoVertex.glsl">
+      <Filter>源文件\shaders</Filter>
+    </None>
+    <None Include="shaders\planeFrag.glsl">
+      <Filter>源文件\shaders</Filter>
+    </None>
+    <None Include="shaders\planeVert.glsl">
       <Filter>源文件\shaders</Filter>
     </None>
   </ItemGroup>
