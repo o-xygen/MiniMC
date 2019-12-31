@@ -5,8 +5,8 @@
 #include "Object.h"
 namespace Physics
 {
-    using DataType::Vector3;
-    using DataType::PhysicsComponent;
+    using GameLogic::Vector3;
+    using GameLogic::PhysicsComponent;
     class PhysicsFunction
     {
     public:

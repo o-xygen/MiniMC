@@ -3,6 +3,7 @@
 #include <glut.h>
 #include "demoBlock.h"
 #include <iostream>
+#include "LogicWorld.h"
 
 Application* glutWrapper::app = nullptr;
 
@@ -25,6 +26,8 @@ void Application::setup(int argc, char* argv[])
 		exit(-1);
 	}
 	glEnable(GL_DEPTH_TEST);
+
+    GameLogic::WorldControler::initialize();
 }
 
 void Application::run() {
@@ -33,9 +36,8 @@ void Application::run() {
 
 void Application::_redraw()
 {
-	static DemoBlock demoBlock;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	demoBlock.draw();
+    GameLogic::WorldControler::startRender();
 	glutSwapBuffers();
 }
 

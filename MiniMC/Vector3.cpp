@@ -1,6 +1,6 @@
 #include "Vector3.h"
 
-namespace DataType
+namespace GameLogic
 {
     Vector3::Vector3() :x(0), y(0), z(0)
     {

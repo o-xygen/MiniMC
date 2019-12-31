@@ -1,10 +1,10 @@
-#include "CubeRoom.h"
+#include "CubicRoom.h"
 #include "PhysicsFunction.h"
 namespace Physics
 {
     const double gravity[3]{ 0,-5,0 };
     const double JumpVelocity[3]{ 0, 8, 0 };
-    using DataType::Vector3;
+    using GameLogic::Vector3;
     static bool checkIn(const Vector3& point, const Vector3& minBound, const Vector3& maxBound)
     {
 #define clamp(x, y, z) (x <= y && y <= z)
@@ -25,13 +25,13 @@ namespace Physics
         Vector3 trueHitPoint[2], bound[2], *position;
 
         double minDelta = DBL_MAX;
-        for (int x = 0; x < CubeRoom::x; ++x)
+        for (int x = 0; x < CubicRoom::x; ++x)
         {
-            for (int y = 0; y < CubeRoom::y; ++y)
+            for (int y = 0; y < CubicRoom::y; ++y)
             {
-                for (int z = 0; z < CubeRoom::z; ++z)
+                for (int z = 0; z < CubicRoom::z; ++z)
                 {
-                    CubeRoom* cube = CubeRoom::map[x][y][z];
+                    CubicRoom* cube = CubicRoom::map[x][y][z];
                     for (PhysicsComponent* unit : cube->list)
                     {
                         position = &unit->logicObject->position;

@@ -81,7 +81,10 @@
     <ClCompile Include="Object.cpp">
       <Filter>源文件\DataType</Filter>
     </ClCompile>
-    <ClCompile Include="CubeRoom.cpp">
+    <ClCompile Include="CubicRoom.cpp">
+      <Filter>源文件\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalVariable.cpp">
       <Filter>源文件\DataType</Filter>
     </ClCompile>
   </ItemGroup>
@@ -116,7 +119,10 @@
     <ClInclude Include="Object.h">
       <Filter>头文件\DataType</Filter>
     </ClInclude>
-    <ClInclude Include="CubeRoom.h">
+    <ClInclude Include="CubicRoom.h">
+      <Filter>头文件\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalVariable.h">
       <Filter>头文件\DataType</Filter>
     </ClInclude>
   </ItemGroup>
