@@ -8,6 +8,7 @@ Application* glutWrapper::app = nullptr;
 
 Application::Application(int width, int height) : windowWidth(width), windowHeight(height) {
 	glutWrapper::app = this;
+	meshMap = new MeshMap();
 }
 
 void Application::setup(int argc, char* argv[])

@@ -1,4 +1,5 @@
 #pragma once
+#include "MeshMap.h"
 class glutWrapper;
 class Application {
 public:
@@ -11,6 +12,8 @@ private:
 	void _reshape(int w, int h);
 	void _idle();
 	friend glutWrapper;
+
+	MeshMap* meshMap;
 };
 
 class glutWrapper {

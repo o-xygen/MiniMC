@@ -169,6 +169,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="block.h" />
+    <ClInclude Include="BlockConst.h" />
+    <ClInclude Include="error.h" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="LoadedTexture.h" />
+    <ClInclude Include="MeshMap.h" />
+    <ClInclude Include="noise.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PhysicsFunction.h" />
     <ClInclude Include="demoBlock.h" />
