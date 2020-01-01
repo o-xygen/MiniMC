@@ -19,10 +19,11 @@ unsigned int generateTexture(unsigned char* data, int width, int height, GLenum 
     return textureID;
 }
 
-int TextureFromFile(const string& filename)
+textureInfo TextureFromFile(const string& filename)
 {
     int textureID = -1;
     int width, height, nrComponents;
+	stbi_set_flip_vertically_on_load(true);
     unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
     if (data)
     {
@@ -42,5 +43,5 @@ int TextureFromFile(const string& filename)
         stbi_image_free(data);
     }
 
-    return textureID;
+	return textureInfo{textureID, width, height};
 }

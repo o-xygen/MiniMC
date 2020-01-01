@@ -161,6 +161,10 @@
     <ClCompile Include="LogicWorld.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="CubicRoom.cpp" />
+    <ClCompile Include="block.cpp" />
+    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="error.cpp" />
+    <ClCompile Include="LoadedTexture.cpp" />
     <ClCompile Include="PhysicsFunction.cpp" />
     <ClCompile Include="demoBlock.cpp" />
     <ClCompile Include="glad.c" />
@@ -173,8 +177,16 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="GlobalVariable.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="LogicWorld.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="block.h" />
+    <ClInclude Include="BlockConst.h" />
+    <ClInclude Include="camera.h" />
+    <ClInclude Include="error.h" />
+    <ClInclude Include="LoadedTexture.h" />
+    <ClInclude Include="MeshMap.h" />
+    <ClInclude Include="noise.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PhysicsFunction.h" />
     <ClInclude Include="demoBlock.h" />
@@ -187,6 +199,8 @@
   <ItemGroup>
     <None Include="shaders\demoFrag.glsl" />
     <None Include="shaders\demoVertex.glsl" />
+    <None Include="shaders\planeFrag.glsl" />
+    <None Include="shaders\planeVert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
