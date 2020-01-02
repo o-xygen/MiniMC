@@ -10,8 +10,10 @@ namespace GameLogic {
         static double camera[3];
         static LogicObject* player;
         static Vector3 cameraOffset;
-        static vector<LogicObject*>objects;
-        static void initialize();
+        static vector<LogicObject*>dynamicObjects;
+        static vector<LogicObject*>staticObjects;
+        static void initialize(void*app);
+        static void updateDynamicObject();
         static void startRender();
     };
 }

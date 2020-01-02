@@ -31,8 +31,7 @@ void Application::setup(int argc, char* argv[])
 	}
 	glEnable(GL_DEPTH_TEST);
 
-    //GameLogic::WorldControler::initialize();
-	initBlockMap();
+    GameLogic::WorldControler::initialize(this);
 }
 
 void Application::run() {
@@ -44,7 +43,7 @@ void Application::_redraw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //GameLogic::WorldControler::startRender();
 
-
+    GameLogic::WorldControler::updateDynamicObject();
 
 	meshMap->render();
 	/*Block* block = BlockMap.at(GrassBlock);

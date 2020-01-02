@@ -5,13 +5,13 @@ class Application {
 public:
 	Application(int width, int height);
 	void setup(int argc, char* argv[]);
+	void initBlockMap();
 	void run();
 private:
 	int windowWidth, windowHeight;
 	void _redraw();
 	void _reshape(int w, int h);
 	void _idle();
-	void initBlockMap();
 	friend glutWrapper;
 
 	MeshMap* meshMap;
