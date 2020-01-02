@@ -2,36 +2,48 @@
 #include "CubicRoom.h"
 namespace GameLogic {
 
-    LogicObject::LogicObject():position(),rotation(){
+    LogicObject::LogicObject(bool isStatic) :position(), rotation(), renderObject(nullptr) {
+        this->isStatic = isStatic;
         physicsObject = new PhysicsComponent(this);
-        renderObject = new RenderComponent(this);
+        if (isStatic)
+        {
+            renderObject = new StaticRenderer(this);
+        }
+        else
+        {
+            //TODO: for dynamic objects in future
+        }
     }
     LogicObject::~LogicObject() {
         delete physicsObject;
-        delete renderObject;
+        if (renderObject)
+        {
+            delete renderObject;
+        }
     }
     void LogicObject::setPosition(double x, double y, double z) {
         this->position.x = x;
         this->position.y = y;
         this->position.z = z;
         physicsObject->setIntoMap();
-        renderObject->setPosition(x, y, z);
+        if (isStatic)
+        {
+            StaticRenderer* staticRenderer = static_cast<StaticRenderer*>(renderObject);
+            staticRenderer->mapX = x;
+            staticRenderer->mapY = y;
+            staticRenderer->mapZ = z;
+        }
+        else
+        {
+            //TODO: for dynamic objects in future
+        }
     }
     void LogicObject::setPosition(const Vector3& vec) {
-        this->position = vec;
-        physicsObject->setIntoMap();
-        renderObject->setPosition(vec.x, vec.y, vec.z);
-    }
-    void LogicObject::setRotation(double x, double y, double z) {
-        double* array = renderObject->demoBlock.rotate;
-        array[0] = x;
-        array[1] = y;
-        array[2] = z;
+        setPosition(vec.x, vec.y, vec.z);
     }
     PhysicsComponent::PhysicsComponent(LogicObject* parent):
         logicObject(parent),
         isRigid(true),
-        isTerrain(true),
         physicsParent(nullptr){
 
     }
@@ -47,10 +59,7 @@ namespace GameLogic {
 
     }
 
-    void RenderComponent::setPosition(double x, double y, double z) {
-        demoBlock.position[0] = x;
-        demoBlock.position[1] = y;
-        demoBlock.position[2] = z;
-
+    StaticRenderer::StaticRenderer(LogicObject* parent):RenderComponent(parent)
+    {
     }
 }

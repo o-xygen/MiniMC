@@ -7,8 +7,11 @@
 #include <fstream>
 #include "json.hpp"
 #include "block.h"
+#include <chrono>
+#include <ctime>
 using json = nlohmann::json;
 Application* glutWrapper::app = nullptr;
+Shader* Application::blockShader = nullptr;
 
 Application::Application(int width, int height) : windowWidth(width), windowHeight(height) {
 	glutWrapper::app = this;
@@ -31,7 +34,11 @@ void Application::setup(int argc, char* argv[])
 	}
 	glEnable(GL_DEPTH_TEST);
 
-    GameLogic::WorldControler::initialize(this);
+    //GameLogic::WorldControler::initialize(this);
+
+	initBlockMap();
+	// setup shaders
+	blockShader = new Shader("shaders/planeVert.glsl", "shaders/planeFrag.glsl");
 }
 
 void Application::run() {
@@ -45,9 +52,11 @@ void Application::_redraw()
 
     GameLogic::WorldControler::updateDynamicObject();
 
+	auto start = std::chrono::system_clock::now();
 	meshMap->render();
-	/*Block* block = BlockMap.at(GrassBlock);
-	block->draw();*/
+	auto after = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsed_seconds = after - start;
+	cout << "render time:" << elapsed_seconds.count() * 1000 << "ms" << endl;
 	glutSwapBuffers();
 }
 

@@ -6,16 +6,17 @@ namespace GameLogic {
     class RenderComponent;
     class LogicObject {
     public:
-        LogicObject();
+        LogicObject(bool isStatic);
         ~LogicObject();
         Vector3 position;//first translate, then rotate.
         Vector3 rotation;
-        void setPosition(double x,double y, double z);
+        bool isStatic;
+        void setPosition(double x, double y, double z);
         void setPosition(const Vector3& vec);
         void setRotation(double x, double y, double z);
 
-        PhysicsComponent*physicsObject;
-        RenderComponent*renderObject;
+        PhysicsComponent* physicsObject;
+        RenderComponent* renderObject;
     };
     class PhysicsComponent
     {
@@ -26,15 +27,29 @@ namespace GameLogic {
         void setIntoMap();
 
         Vector3 velocity;
-        bool isRigid, isTerrain;
+        bool isRigid;
         LogicObject* logicObject;
     };
     class RenderComponent {
         friend class LogicObject;
+    protected:
         RenderComponent(LogicObject* parent);
     public:
-        void setPosition(double x, double y, double z);
-        DemoBlock demoBlock;
+        //void setPosition(double x, double y, double z);
+        //DemoBlock demoBlock;
+
         LogicObject* logicObject;
     };
+    class StaticRenderer :public RenderComponent {
+        friend class LogicObject;
+        StaticRenderer(LogicObject* parent);
+    public:
+        int mapX, mapY, mapZ;
+    };
+
+    class DynamicRenderer :public RenderComponent
+    {
+
+    };
+
 }

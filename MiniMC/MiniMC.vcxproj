@@ -159,6 +159,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="GlobalVariable.cpp" />
     <ClCompile Include="LogicWorld.cpp" />
+    <ClCompile Include="MeshMap.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="CubicRoom.cpp" />
     <ClCompile Include="block.cpp" />
