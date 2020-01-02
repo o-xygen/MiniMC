@@ -18,7 +18,9 @@ namespace Physics
         /// <param name="hitOne">if hit, return the object hit</param>
         /// <param name="point">if hit, give the point hit</param>
         /// <returns>if get hit</returns>
-        bool static doRaycast(const Vector3& startPoint, const Vector3& direction, const PhysicsComponent*& hitOne, const Vector3*& point);
+        static bool doRaycast(const Vector3& startPoint, const Vector3& direction, const PhysicsComponent*& hitOne, const Vector3*& point);
+
+        static void updateObject(GameLogic::LogicObject* object);
     };
 
 }

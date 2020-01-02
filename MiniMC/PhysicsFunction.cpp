@@ -125,7 +125,7 @@ namespace Physics
         
     }*/
 
-    void Physics::updateObject(GameLogic::LogicObject* object) {
+    void PhysicsFunction::updateObject(GameLogic::LogicObject* object) {
         CubicRoom* cube = (CubicRoom*)object->physicsObject->physicsParent;
         if (object->physicsObject->velocity == Vector3{0, 0, 0}) {
 
