@@ -82,6 +82,7 @@ void MeshMap::render()
 		};
 
 		block->delegateDraw(func);
+		glDeleteBuffers(1, &buffer);
 		delete[] modelMats;
 	}
 }
