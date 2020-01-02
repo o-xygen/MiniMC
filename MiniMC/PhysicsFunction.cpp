@@ -124,4 +124,14 @@ namespace Physics
     {
         
     }*/
+
+    void PhysicsFunction::updateObject(GameLogic::LogicObject* object) {
+        CubicRoom* cube = (CubicRoom*)object->physicsObject->physicsParent;
+        if (object->physicsObject->velocity == Vector3{0, 0, 0}) {
+
+        }
+        else {
+
+        }
+    }
 }

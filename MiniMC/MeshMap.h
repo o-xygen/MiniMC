@@ -15,7 +15,6 @@ class MeshMap
 {
 public:
 	MeshMap();
-
 	void render();
 
 private:

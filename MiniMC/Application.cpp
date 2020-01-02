@@ -48,7 +48,13 @@ void Application::_redraw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //GameLogic::WorldControler::startRender();
+<<<<<<< HEAD
 	auto start = std::chrono::system_clock::now();
+=======
+
+
+
+>>>>>>> 20555c3fbdd263c5f2c4bca98d8ba0048f8085cc
 	meshMap->render();
 	auto after = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed_seconds = after - start;
