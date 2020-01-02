@@ -18,6 +18,10 @@ namespace GameLogic
     {
         return Vector3{ x - a.x,y - a.y,z - a.z };
     }
+    bool Vector3::operator==(const Vector3& a)
+    {
+        return x == a.x && y == a.y && z == a.z;
+    }
     double Vector3::sqrDistance(const Vector3& a, const Vector3& b)
     {
         double sqrtX = a.x - b.x;

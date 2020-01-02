@@ -43,6 +43,9 @@ void Application::_redraw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //GameLogic::WorldControler::startRender();
+
+
+
 	meshMap->render();
 	/*Block* block = BlockMap.at(GrassBlock);
 	block->draw();*/

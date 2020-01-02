@@ -12,6 +12,7 @@ namespace Physics
     {
     public:
         vector<PhysicsComponent*> list{};
+        int indexX, indexY, indexZ;
 
         static GameLogic::Vector3 offset;
         static int x, y, z;

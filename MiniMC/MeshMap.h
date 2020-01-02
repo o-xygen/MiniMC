@@ -16,7 +16,7 @@ public:
 		Perlin perlin;
 		stride = 1.f;
 		// default 100*100
-		size = 100;
+		size = 10;
 		map = new MapAttr* [size];
 		for (int x = 0; x < size; x++) {
 			map[x] = new MapAttr[size];

@@ -21,6 +21,9 @@ namespace Physics
                 for (int k = 0; k < z; ++k)
                 {
                     map[i][j][k] = new CubicRoom();
+                    map[i][j][k]->indexX = i;
+                    map[i][j][k]->indexY = j;
+                    map[i][j][k]->indexZ = k;
                 }
             }
         }
