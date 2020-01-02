@@ -99,6 +99,9 @@
     <ClCompile Include="block.cpp">
       <Filter>源文件\basic_objs</Filter>
     </ClCompile>
+    <ClCompile Include="MeshMap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">

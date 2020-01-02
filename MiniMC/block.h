@@ -10,6 +10,7 @@
 #include <glm/glm.hpp>
 #include "Shader.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <functional>
 using std::map;
 using std::string;
 using std::vector;
@@ -62,22 +63,19 @@ public:
 		//unbind  
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
-		shader = new Shader("shaders/planeVert.glsl", "shaders/planeFrag.glsl");
 	}
 	~Plane() {
 		delete[] vertices;
-		delete shader;
 	}
 
 	void addTexture(int textureID) {
 		textures.push_back(textureID);
 	}
 
-	void draw(const vec3& pos) {
+	void draw(const vec3& pos, Shader * shader) {
 		glBindVertexArray(VAO);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textures[0]);
-		shader->use();
 		shader->setInt("diffuse_tex1", 0);
 		glm::mat4 projection(1.f), view(1.f), model(1.f);
 		projection = camera.getProjectionMat();
@@ -95,12 +93,13 @@ private:
 	float *vertices;
 	vector<int> textures;
 	GLuint VAO, VBO;
-	Shader* shader;
+	friend Block;
 };
 
 class Block
 {
 public:
+	using DrawCallbackType = std::function<void (map<int, vector<int>>, int, int)>;
 	Block(json conf)
 	{
 		blockID = conf.at("blockID");
@@ -182,10 +181,18 @@ public:
 		globalPos = pos;
 	}
 
-	void draw() {
+	void draw(Shader* shader) {
 		for (auto plane : planes) {
-			plane->draw(globalPos);
+			plane->draw(globalPos, shader);
 		}
+	}
+
+	void delegateDraw(const DrawCallbackType& func) {
+		map<int, vector<int>> meshes;
+		for (auto plane : planes) {
+			meshes.insert({ plane->VAO, plane->textures });
+		}
+		func(meshes, 0, 6);
 	}
 
 private:

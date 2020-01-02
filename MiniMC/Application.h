@@ -1,11 +1,14 @@
 #pragma once
 #include "MeshMap.h"
+#include "Shader.h"
 class glutWrapper;
 class Application {
 public:
 	Application(int width, int height);
 	void setup(int argc, char* argv[]);
 	void run();
+
+	static Shader* blockShader;
 private:
 	int windowWidth, windowHeight;
 	void _redraw();
