@@ -2,7 +2,7 @@
 #include "CubicRoom.h"
 namespace GameLogic {
 
-    LogicObject::LogicObject(bool isStatic) :position(), rotation(), renderObject(nullptr) {
+    LogicObject::LogicObject(bool isStatic) :position(), renderObject(nullptr) {
         this->isStatic = isStatic;
         physicsObject = new PhysicsComponent(this);
         if (isStatic)

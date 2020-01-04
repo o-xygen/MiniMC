@@ -2,8 +2,9 @@
 #include "CubicRoom.h"
 #include "MeshMap.h"
 namespace GameLogic {
-    double WorldControler::camera[3];
     LogicObject* WorldControler::player;
+    bool WorldControler::onTheGround;
+    double WorldControler::playerFoward[2];
     Vector3 WorldControler::cameraOffset;
     vector<LogicObject*>WorldControler::dynamicObjects;
     void* WorldControler::meshMap;
@@ -20,38 +21,63 @@ namespace GameLogic {
                 for(int y : _meshMap->map[x][z].heights)
                 {
                     LogicObject* logicObject = new LogicObject(true);
-                    logicObject->setPosition(x, y, z);
+                    logicObject->setPosition(x + 0.5, y + 0.5, z + 0.5);
                     logicObject->physicsObject->isRigid = true;
                     //staticObjects.push_back(logicObject);
                 }
             }
         }
 
+        int maxY = -0x7fffffff;//may be 64 bit?
+        for (int y : _meshMap->map[0][0].heights)
+        {
+            if(y > maxY)
+            {
+                maxY = y;
+            }
+        }
+        onTheGround = true;
         player = new LogicObject(false);
-        player->setPosition(0.0, 1.0, 0.0);
+        player->setPosition(0.5, maxY + 1.5, 0.5);
         player->physicsObject->isRigid = true;
 
-        cameraOffset = { 0,0.5,-1 };
+        cameraOffset = { 0,1,0 };
         //objects.push_back(player);
     }
     void WorldControler::updateDynamicObject()
     {
         for(LogicObject* object : dynamicObjects)
         {
-            
+
         }
     }
     void WorldControler::startRender() {
-        //TODO update camera
+        updateCamera();
 
         /*
         for (LogicObject* object : staticObjects) {
             object->renderObject->demoBlock.draw();
         }
-        */
         for (LogicObject* object : dynamicObjects) {
-            //object->renderObject->demoBlock.draw();
+            object->renderObject->demoBlock.draw();
         }
+        */
 
+    }
+    static const glm::vec4 xDirection{ 1.f,0.f,0.f,1.f };
+    void WorldControler::updateCamera()
+    {
+        Vector3 temp = player->position + cameraOffset;
+        glm::vec4 translate{ temp.x,temp.y,temp.z,0 };
+
+        double* playerRotation = WorldControler::playerFoward;
+        glm::mat4 rotateWithY = glm::rotate(glm::mat4{ 1 }, glm::radians((float)playerRotation[0]), glm::vec3{ 0.f,-1.f,0.f });
+        glm::vec3 newDirection = rotateWithY * xDirection;
+        glm::mat4 cameraRotation = glm::rotate(glm::mat4{ 1 }, glm::radians((float)playerRotation[1]), newDirection);
+        cameraRotation = cameraRotation * rotateWithY;
+
+        camera.headPosition = /*cameraRotation* */camera.originHead + translate;
+        camera.lookTo = cameraRotation * camera.originLookTo + translate;
+        //camera.up = cameraRotation * camera.originUp + translate;
     }
 }

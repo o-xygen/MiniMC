@@ -1,6 +1,7 @@
 #pragma once
 #include "MeshMap.h"
 #include "Shader.h"
+#include "KeyboardHandler.h"
 class glutWrapper;
 class Application {
 public:

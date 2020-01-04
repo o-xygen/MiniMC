@@ -102,6 +102,12 @@
     <ClCompile Include="MeshMap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="KeyboardHandler.cpp">
+      <Filter>源文件\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseHandler.cpp">
+      <Filter>源文件\GameLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -163,6 +169,12 @@
     </ClInclude>
     <ClInclude Include="json.hpp">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardHandler.h">
+      <Filter>头文件\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseHandler.h">
+      <Filter>头文件\GameLogic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

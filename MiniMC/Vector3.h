@@ -10,6 +10,7 @@ namespace GameLogic
         Vector3 operator+(const Vector3& a);
         Vector3 operator-(const Vector3& a);
         bool operator==(const Vector3& a);
+        double operator[](int index)const;
         static double sqrDistance(const Vector3& a, const Vector3& b);
     };
 }

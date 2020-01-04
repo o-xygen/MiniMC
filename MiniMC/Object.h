@@ -1,6 +1,5 @@
 #pragma once
 #include "Vector3.h"
-#include "demoBlock.h"
 namespace GameLogic {
     class PhysicsComponent;
     class RenderComponent;
@@ -9,7 +8,7 @@ namespace GameLogic {
         LogicObject(bool isStatic);
         ~LogicObject();
         Vector3 position;//first translate, then rotate.
-        Vector3 rotation;
+        //Vector3 rotation;
         bool isStatic;
         void setPosition(double x, double y, double z);
         void setPosition(const Vector3& vec);

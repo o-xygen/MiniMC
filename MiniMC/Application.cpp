@@ -9,6 +9,8 @@
 #include "block.h"
 #include <chrono>
 #include <ctime>
+#include "KeyboardHandler.h"
+#include "MouseHandler.h"
 using json = nlohmann::json;
 Application* glutWrapper::app = nullptr;
 Shader* Application::blockShader = nullptr;
@@ -23,9 +25,17 @@ void Application::setup(int argc, char* argv[])
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
 	glutInitWindowSize(windowWidth, windowHeight);
+    GameLogic::MouseHandler::width = windowWidth;
+    GameLogic::MouseHandler::height = windowHeight;
 	int windowHandle = glutCreateWindow("MiniMC");
 	glutDisplayFunc(glutWrapper::redraw);
 	glutReshapeFunc(glutWrapper::reshape);
+    glutKeyboardFunc(GameLogic::KeyboardHandler::keyboardRegister);
+    //glutMouseFunc(GameLogic::MouseHandler::mouseClick);
+    //glutMotionFunc(GameLogic::MouseHandler::mouseRegister);
+    glutPassiveMotionFunc(GameLogic::MouseHandler::mouseRegister);
+    glutEntryFunc(GameLogic::MouseHandler::mouseEnter);
+    //glutKeyboardUpFunc();
 	glutIdleFunc(glutWrapper::idle);
 
 	if (!gladLoadGL()) {
@@ -48,12 +58,14 @@ void Application::run() {
 void Application::_redraw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //GameLogic::WorldControler::startRender();
 
     GameLogic::WorldControler::updateDynamicObject();
 
 	auto start = std::chrono::system_clock::now();
-	meshMap->render();
+
+    GameLogic::WorldControler::startRender();
+    meshMap->render();
+
 	auto after = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed_seconds = after - start;
 	cout << "render time:" << elapsed_seconds.count() * 1000 << "ms" << endl;

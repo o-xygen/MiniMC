@@ -1,7 +1,7 @@
 ﻿#include "Application.h"
 
 int main(int argc, char* argv[]) {
-	Application* app = new Application(480, 480);
+	Application* app = new Application(720, 480);
 	app->setup(argc, argv);
 	app->run();
 	delete app;
