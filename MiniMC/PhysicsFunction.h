@@ -7,7 +7,9 @@ namespace Physics
 {
     using GameLogic::Vector3;
     using GameLogic::PhysicsComponent;
-    const double Gravity = 0.01;
+    extern const double Gravity;
+    extern const double Friction;
+    extern const float moveSpeed;
     class PhysicsFunction
     {
     public:

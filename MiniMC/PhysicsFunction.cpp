@@ -1,11 +1,13 @@
 #include "CubicRoom.h"
 #include "PhysicsFunction.h"
 #include "LogicWorld.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace Physics
 {
-    const double gravity[3]{ 0,-5,0 };
-    const double JumpVelocity[3]{ 0, 8, 0 };
+    const double Gravity = 0.01;
+    const double Friction = 0.01;
+    const float moveSpeed = 0.05f;
     using GameLogic::Vector3;
     static bool checkIn(const Vector3& point, const Vector3& minBound, const Vector3& maxBound)
     {
@@ -27,11 +29,11 @@ namespace Physics
         Vector3 trueHitPoint[2], bound[2], *position;
 
         double minDelta = DBL_MAX;
-        for (int x = 0; x < CubicRoom::x; ++x)
+        for (int x = 0; x < CubicRoom::mapLengthX; ++x)
         {
-            for (int y = 0; y < CubicRoom::y; ++y)
+            for (int y = 0; y < CubicRoom::mapLengthY; ++y)
             {
-                for (int z = 0; z < CubicRoom::z; ++z)
+                for (int z = 0; z < CubicRoom::mapLengthZ; ++z)
                 {
                     CubicRoom* cube = CubicRoom::map[x][y][z];
                     for (PhysicsComponent* unit : cube->list)
@@ -126,7 +128,7 @@ namespace Physics
     {
         
     }*/
-    inline void clampIndex(double&velocity, int max, int min,int index,int maxIndex)
+    inline void clampIndex(double&velocity, int max, int min,int index,int maxIndex,double& minusV,double&posV)
     {
         if (velocity < 0)
         {
@@ -134,6 +136,7 @@ namespace Physics
             {
                 min = max - 1;
             }
+            minusV = velocity;
         }
         else if (velocity > 0)
         {
@@ -141,11 +144,11 @@ namespace Physics
             {
                 max = min + 1;
             }
+            posV = velocity;
         }
     }
-    inline void giveFriction(double& value)
+    inline void giveFriction(double& value, double friction)
     {
-        const static double friction = 0.01;
         if (value <= friction)
         {
             value += friction;
@@ -171,42 +174,65 @@ namespace Physics
         //update player
         PhysicsComponent* playerPhysics = GameLogic::WorldControler::player->physicsObject;
         CubicRoom* cube = static_cast<Physics::CubicRoom*>(playerPhysics->physicsParent);
-        int indexX = cube->x, indexY = cube->y, indexZ = cube->z;
         Vector3& velocity = playerPhysics->velocity;
-        //TODO: velocity shouldn't be too fast to check collision
-        if (!GameLogic::WorldControler::onTheGround)
-        {
-            Vector3 targetPosition = GameLogic::WorldControler::player->position + velocity;
-            int minX = indexX, maxX = indexX, minY = indexY, maxY = indexY, minZ = indexZ, maxZ = indexZ;
-            clampIndex(velocity.x, maxX, minX, indexX, CubicRoom::x);
-            clampIndex(velocity.y, maxY, minY, indexY, CubicRoom::y);
-            clampIndex(velocity.z, maxZ, minZ, indexZ, CubicRoom::z);
-            for (int x = minX, y, z; x <= maxX; ++x)
-            {
-                for (y = minY; y <= maxY; ++y)
-                {
-                    for (z = minZ; z <= maxZ; ++z)
-                    {
-                        for (PhysicsComponent* object : CubicRoom::map[x][y][z]->list)
-                        {
-                            if (object != playerPhysics)
-                            {
 
+        Vector3 targetPosition = GameLogic::WorldControler::player->position + velocity;
+        int minX = cube->indexX, maxX = cube->indexX, minY = cube->indexY, maxY = cube->indexY, minZ = cube->indexZ, maxZ = cube->indexZ;
+        velocity.y += Gravity;
+        Vector3 divideVelocity[2]{};//0 -> -,1 -> +
+        clampIndex(velocity.x, maxX, minX, cube->indexX, CubicRoom::mapLengthX, divideVelocity[0].x, divideVelocity[1].x);
+        clampIndex(velocity.y, maxY, minY, cube->indexY, CubicRoom::mapLengthY, divideVelocity[0].y, divideVelocity[1].y);
+        clampIndex(velocity.z, maxZ, minZ, cube->indexZ, CubicRoom::mapLengthZ, divideVelocity[0].z, divideVelocity[1].z);
+        for (int x = minX, y, z; x <= maxX; ++x)
+        {
+            for (y = minY; y <= maxY; ++y)
+            {
+                for (z = minZ; z <= maxZ; ++z)
+                {
+                    for (PhysicsComponent* object : CubicRoom::map[x][y][z]->list)
+                    {
+                        if (object != playerPhysics)
+                        {
+                            const Vector3& otherPosition = object->logicObject->position;
+                            Vector3 range[2]
+                            {
+                                otherPosition + object->bound[0] - playerPhysics->bound[1],
+                                otherPosition + object->bound[1] - playerPhysics->bound[0]
+                            };
+                            if (range[0] <= targetPosition && targetPosition <= range[1])
+                            {
+#define NO_BIGGER(a,b,c,d) \
+    if(a <= b && b < c){\
+        b = a;\
+        d = 0;\
+    }
+#define NO_SMALLER(a,b,c,d) \
+    if(a < b && b <= c){\
+        b = c;\
+        d = 0;\
+    }
+                                NO_BIGGER(range[0].x, targetPosition.x, otherPosition.x, divideVelocity[1].x);
+                                NO_BIGGER(range[0].y, targetPosition.y, otherPosition.y, divideVelocity[1].y);
+                                NO_BIGGER(range[0].z, targetPosition.z, otherPosition.z, divideVelocity[1].z);
+                                NO_SMALLER(otherPosition.x, targetPosition.x, range[1].x, divideVelocity[0].x);
+                                if (otherPosition.y < targetPosition.y && targetPosition.y <= range[1].y) {
+                                    targetPosition.y = range[1].y;
+                                    divideVelocity[0].y = 0;
+                                    GameLogic::WorldControler::onTheGround = true;
+                                }
+                                NO_SMALLER(otherPosition.z, targetPosition.z, range[1].z, divideVelocity[0].z);
                             }
                         }
                     }
                 }
             }
-            giveFriction(velocity.x);
-            giveFriction(velocity.z);
-            velocity.y += Gravity;
         }
-        else
-        {
+        velocity = divideVelocity[0] + divideVelocity[1];
+        playerPhysics->logicObject->position = targetPosition;
 
-            //may jump
-        }
-
+        double rad = glm::radians(GameLogic::WorldControler::playerForward[0]);
+        giveFriction(velocity.x, abs(sin(rad)));
+        giveFriction(velocity.z, abs(cos(rad)));
     }
     void PhysicsFunction::updateObject(GameLogic::LogicObject* object) {
         CubicRoom* cube = (CubicRoom*)object->physicsObject->physicsParent;

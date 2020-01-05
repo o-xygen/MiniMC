@@ -15,7 +15,7 @@ namespace Physics
         int indexX, indexY, indexZ;
 
         static GameLogic::Vector3 offset;
-        static int x, y, z;
+        static int mapLengthX, mapLengthY, mapLengthZ;
         static CubicRoom**** map;
 
         static void initialize(int x, int y, int z);

@@ -10,19 +10,22 @@ namespace GameLogic
     {
 
     }
-    Vector3 Vector3::operator+(const Vector3& a)
+    Vector3 Vector3::operator+(const Vector3& a)const
     {
         return Vector3{ x + a.x,y + a.y,z + a.z };
     }
-    Vector3 Vector3::operator-(const Vector3& a)
+    Vector3 Vector3::operator-(const Vector3& a)const
     {
         return Vector3{ x - a.x,y - a.y,z - a.z };
     }
-    bool Vector3::operator==(const Vector3& a)
+    bool Vector3::operator==(const Vector3& a)const
     {
         return x == a.x && y == a.y && z == a.z;
     }
-
+    bool Vector3::operator<=(const Vector3& a)const
+    {
+        return x <= a.x && y <= a.y && z <= a.z;
+    }
     inline double Vector3::operator[](int index)const
     {
         return index == 0 ? x : index == 1 ? y : z;

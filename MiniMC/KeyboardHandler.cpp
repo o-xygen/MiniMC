@@ -4,6 +4,7 @@
 //#include <glm/detail/func_trigonometric.inl>
 #include <glm/mat4x4.hpp>
 #include "LogicWorld.h"
+#include "CubicRoom.h"
 
 namespace GameLogic
 {
@@ -50,13 +51,12 @@ namespace GameLogic
             WorldControler::player->physicsObject->velocity.y = jumpSpeed;
         }
     }
-    const float moveSpeed = 0.05f;
     void KeyboardHandler::giveVelocity(const glm::vec4& direction)
     {
         Vector3& velocity = WorldControler::player->physicsObject->velocity;
         double rad = glm::radians(WorldControler::playerForward[0]);
-        velocity.x = -sin(rad);
-        velocity.z = cos(rad);
+        velocity.x = -sin(rad) * Physics::moveSpeed;
+        velocity.z = cos(rad) * Physics::moveSpeed;
 
     }
 }
