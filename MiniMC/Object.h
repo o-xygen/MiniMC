@@ -26,6 +26,7 @@ namespace GameLogic {
         void setIntoMap();
 
         Vector3 velocity;
+        Vector3 bound[2];//[0]->min,[1]->max
         bool isRigid;
         LogicObject* logicObject;
     };

@@ -11,6 +11,7 @@
 #include <ctime>
 #include "KeyboardHandler.h"
 #include "MouseHandler.h"
+#include "PhysicsFunction.h"
 using json = nlohmann::json;
 Application* glutWrapper::app = nullptr;
 Shader* Application::blockShader = nullptr;
@@ -59,7 +60,7 @@ void Application::_redraw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    GameLogic::WorldControler::updateDynamicObject();
+    Physics::PhysicsFunction::physicsUpdate();
 
 	auto start = std::chrono::system_clock::now();
 

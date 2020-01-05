@@ -50,15 +50,13 @@ namespace GameLogic
             WorldControler::player->physicsObject->velocity.y = jumpSpeed;
         }
     }
-    const float moveSpeed = 1.f;
+    const float moveSpeed = 0.05f;
     void KeyboardHandler::giveVelocity(const glm::vec4& direction)
     {
-        glm::mat4 matrix{ 1.f };
-        matrix = glm::rotate(matrix, glm::radians((float)WorldControler::playerFoward[0]), glm::vec3{ 0.f,-1.f,0.f });
-        glm::vec3 velocity = matrix * direction * moveSpeed;
-        Vector3& vector3 = WorldControler::player->physicsObject->velocity;
-        vector3.x = velocity.x;
-        vector3.z = velocity.z;
+        Vector3& velocity = WorldControler::player->physicsObject->velocity;
+        double rad = glm::radians(WorldControler::playerForward[0]);
+        velocity.x = -sin(rad);
+        velocity.z = cos(rad);
 
     }
 }

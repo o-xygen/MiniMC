@@ -7,6 +7,7 @@ namespace Physics
 {
     using GameLogic::Vector3;
     using GameLogic::PhysicsComponent;
+    const double Gravity = 0.01;
     class PhysicsFunction
     {
     public:
@@ -21,6 +22,8 @@ namespace Physics
         static bool doRaycast(const Vector3& startPoint, const Vector3& direction, const PhysicsComponent*& hitOne, const Vector3*& point);
 
         static void updateObject(GameLogic::LogicObject* object);
+
+        static void physicsUpdate();
     };
 
 }

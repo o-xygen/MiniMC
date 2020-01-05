@@ -20,7 +20,7 @@ namespace GameLogic
             }
             else
             {
-                double* playerRotate = WorldControler::playerFoward;
+                double* playerRotate = WorldControler::playerForward;
 
                 playerRotate[0] += (x - lastX) * xMotion;
                 if (playerRotate[0] < 0)

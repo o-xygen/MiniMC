@@ -4,7 +4,7 @@
 namespace GameLogic {
     LogicObject* WorldControler::player;
     bool WorldControler::onTheGround;
-    double WorldControler::playerFoward[2];
+    double WorldControler::playerForward[2];
     Vector3 WorldControler::cameraOffset;
     vector<LogicObject*>WorldControler::dynamicObjects;
     void* WorldControler::meshMap;
@@ -23,6 +23,8 @@ namespace GameLogic {
                     LogicObject* logicObject = new LogicObject(true);
                     logicObject->setPosition(x + 0.5, y + 0.5, z + 0.5);
                     logicObject->physicsObject->isRigid = true;
+                    logicObject->physicsObject->bound[0] = { -0.5,-0.5,-0.5 };
+                    logicObject->physicsObject->bound[1] = { 0.5,0.5,0.5 };
                     //staticObjects.push_back(logicObject);
                 }
             }
@@ -40,16 +42,11 @@ namespace GameLogic {
         player = new LogicObject(false);
         player->setPosition(0.5, maxY + 1.5, 0.5);
         player->physicsObject->isRigid = true;
+        player->physicsObject->bound[0] = { -0.2,-0.5,-0.2 };
+        player->physicsObject->bound[1] = { 0.2,1.5,0.2 };
 
         cameraOffset = { 0,1,0 };
         //objects.push_back(player);
-    }
-    void WorldControler::updateDynamicObject()
-    {
-        for(LogicObject* object : dynamicObjects)
-        {
-
-        }
     }
     void WorldControler::startRender() {
         updateCamera();
@@ -70,7 +67,7 @@ namespace GameLogic {
         Vector3 temp = player->position + cameraOffset;
         glm::vec4 translate{ temp.x,temp.y,temp.z,0 };
 
-        double* playerRotation = WorldControler::playerFoward;
+        double* playerRotation = WorldControler::playerForward;
         glm::mat4 rotateWithY = glm::rotate(glm::mat4{ 1 }, glm::radians((float)playerRotation[0]), glm::vec3{ 0.f,-1.f,0.f });
         glm::vec3 newDirection = rotateWithY * xDirection;
         glm::mat4 cameraRotation = glm::rotate(glm::mat4{ 1 }, glm::radians((float)playerRotation[1]), newDirection);

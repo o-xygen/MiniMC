@@ -13,13 +13,12 @@ namespace GameLogic {
 
         static LogicObject* player;
         static bool onTheGround;
-        static double playerFoward[2];
+        static double playerForward[2];
         static Vector3 cameraOffset;
 
         static vector<LogicObject*>dynamicObjects;
         static vector<LogicObject*>staticObjects;
         static void initialize();
-        static void updateDynamicObject();
         static void startRender();
     };
 }

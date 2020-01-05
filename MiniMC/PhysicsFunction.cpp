@@ -1,5 +1,7 @@
 #include "CubicRoom.h"
 #include "PhysicsFunction.h"
+#include "LogicWorld.h"
+
 namespace Physics
 {
     const double gravity[3]{ 0,-5,0 };
@@ -124,7 +126,88 @@ namespace Physics
     {
         
     }*/
+    inline void clampIndex(double&velocity, int max, int min,int index,int maxIndex)
+    {
+        if (velocity < 0)
+        {
+            if (index - 1 >= 0)
+            {
+                min = max - 1;
+            }
+        }
+        else if (velocity > 0)
+        {
+            if (index + 1 < maxIndex)
+            {
+                max = min + 1;
+            }
+        }
+    }
+    inline void giveFriction(double& value)
+    {
+        const static double friction = 0.01;
+        if (value <= friction)
+        {
+            value += friction;
+        }
+        else if (value >= friction)
+        {
+            value -= friction;
+        }
+        else
+        {
+            value = 0;
+        }
+    }
+    void PhysicsFunction::physicsUpdate()
+    {
+        /*
+        for(LogicObject* object : dynamicObjects)
+        {
 
+        }
+        */
+
+        //update player
+        PhysicsComponent* playerPhysics = GameLogic::WorldControler::player->physicsObject;
+        CubicRoom* cube = static_cast<Physics::CubicRoom*>(playerPhysics->physicsParent);
+        int indexX = cube->x, indexY = cube->y, indexZ = cube->z;
+        Vector3& velocity = playerPhysics->velocity;
+        //TODO: velocity shouldn't be too fast to check collision
+        if (!GameLogic::WorldControler::onTheGround)
+        {
+            Vector3 targetPosition = GameLogic::WorldControler::player->position + velocity;
+            int minX = indexX, maxX = indexX, minY = indexY, maxY = indexY, minZ = indexZ, maxZ = indexZ;
+            clampIndex(velocity.x, maxX, minX, indexX, CubicRoom::x);
+            clampIndex(velocity.y, maxY, minY, indexY, CubicRoom::y);
+            clampIndex(velocity.z, maxZ, minZ, indexZ, CubicRoom::z);
+            for (int x = minX, y, z; x <= maxX; ++x)
+            {
+                for (y = minY; y <= maxY; ++y)
+                {
+                    for (z = minZ; z <= maxZ; ++z)
+                    {
+                        for (PhysicsComponent* object : CubicRoom::map[x][y][z]->list)
+                        {
+                            if (object != playerPhysics)
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
+            giveFriction(velocity.x);
+            giveFriction(velocity.z);
+            velocity.y += Gravity;
+        }
+        else
+        {
+
+            //may jump
+        }
+
+    }
     void PhysicsFunction::updateObject(GameLogic::LogicObject* object) {
         CubicRoom* cube = (CubicRoom*)object->physicsObject->physicsParent;
         if (object->physicsObject->velocity == Vector3{0, 0, 0}) {
