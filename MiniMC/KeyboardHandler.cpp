@@ -43,12 +43,12 @@ namespace GameLogic
         }
         }
     }
-    const double jumpSpeed = 5.f;
     void KeyboardHandler::tryJump()
     {
         if(WorldControler::onTheGround)
         {
-            WorldControler::player->physicsObject->velocity.y = jumpSpeed;
+            WorldControler::player->physicsObject->velocity.y = Physics::jumpSpeed;
+            WorldControler::onTheGround = false;
         }
     }
     void KeyboardHandler::giveVelocity(const glm::vec4& direction)

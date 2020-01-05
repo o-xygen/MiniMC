@@ -10,6 +10,7 @@ namespace Physics
     extern const double Gravity;
     extern const double Friction;
     extern const float moveSpeed;
+    extern const double jumpSpeed;
     class PhysicsFunction
     {
     public:
