@@ -54,9 +54,10 @@ namespace GameLogic
     void KeyboardHandler::giveVelocity(const glm::vec4& direction)
     {
         Vector3& velocity = WorldControler::player->physicsObject->velocity;
-        double rad = glm::radians(WorldControler::playerForward[0]);
-        velocity.x = -sin(rad) * Physics::moveSpeed;
-        velocity.z = cos(rad) * Physics::moveSpeed;
+        glm::vec3 res = glm::rotate(glm::mat4{ 1 }, glm::radians((float)WorldControler::playerForward[0]), glm::vec3{ 0.f,-1.f,0.f })
+            * direction;
+        velocity.x = res.x * Physics::moveSpeed;
+        velocity.z = res.z * Physics::moveSpeed;
 
     }
 }

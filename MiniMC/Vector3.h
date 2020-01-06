@@ -11,7 +11,9 @@ namespace GameLogic
         Vector3 operator-(const Vector3& a)const;
         bool operator==(const Vector3& a)const;
         bool operator<=(const Vector3& a)const;
+        bool operator<(const Vector3& a)const;
         double operator[](int index)const;
+        static double sqrLength(const Vector3& a);
         static double sqrDistance(const Vector3& a, const Vector3& b);
     };
 }

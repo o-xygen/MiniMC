@@ -11,8 +11,8 @@ namespace GameLogic {
     //vector<LogicObject*>WorldControler::staticObjects;
     void WorldControler::initialize() {
         MeshMap* _meshMap = static_cast<MeshMap*>(meshMap);
-        Physics::CubicRoom::initialize(_meshMap->size, 20, _meshMap->size);
         Physics::CubicRoom::offset = { 0, -5, 0 };
+        Physics::CubicRoom::initialize(_meshMap->size, 20, _meshMap->size);
 
         for (int x = 0; x < _meshMap->size; ++x)
         {
@@ -40,10 +40,10 @@ namespace GameLogic {
         }
         onTheGround = true;
         player = new LogicObject(false);
-        player->setPosition(0.5, maxY + 1.5, 0.5);
+        player->setPosition(0.5, maxY + 1 + 0.5, 0.5);
         player->physicsObject->isRigid = true;
         player->physicsObject->bound[0] = { -0.2,-0.5,-0.2 };
-        player->physicsObject->bound[1] = { 0.2,1.5,0.2 };
+        player->physicsObject->bound[1] = { 0.2,0.5,0.2 };
 
         cameraOffset = { 0,1,0 };
         //objects.push_back(player);

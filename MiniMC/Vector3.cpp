@@ -26,9 +26,17 @@ namespace GameLogic
     {
         return x <= a.x && y <= a.y && z <= a.z;
     }
+    bool Vector3::operator<(const Vector3& a)const
+    {
+        return x < a.x || y < a.y || z < a.z;
+    }
     inline double Vector3::operator[](int index)const
     {
         return index == 0 ? x : index == 1 ? y : z;
+    }
+    double Vector3::sqrLength(const Vector3& a)
+    {
+        return a.x * a.x + a.y * a.y + a.z * a.z;
     }
     double Vector3::sqrDistance(const Vector3& a, const Vector3& b)
     {

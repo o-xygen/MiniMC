@@ -24,6 +24,8 @@ namespace Physics
                     map[i][j][k]->indexX = i;
                     map[i][j][k]->indexY = j;
                     map[i][j][k]->indexZ = k;
+                    map[i][j][k]->range[0] = Vector3{ i + 0.,j + 0.,k + 0. } + offset;
+                    map[i][j][k]->range[1] = Vector3{ i + 1.,j + 1.,k + 1. } + offset;
                 }
             }
         }

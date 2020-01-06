@@ -6,8 +6,8 @@
 namespace Physics
 {
     const double Gravity = 0.01;
-    const double Friction = 0.01;
-    const float moveSpeed = 0.05f;
+    const double Friction = 0.001;
+    const float moveSpeed = 0.1f;
     const double jumpSpeed = 0.2;
     using GameLogic::Vector3;
     static bool checkIn(const Vector3& point, const Vector3& minBound, const Vector3& maxBound)
@@ -129,7 +129,7 @@ namespace Physics
     {
         
     }*/
-    inline void clampIndex(double& velocity, int& max, int& min, int index, int maxIndex, double& minusV, double& posV)
+    constexpr void clampIndex(double& velocity, int& max, int& min, int index, int maxIndex)
     {
         if (velocity < 0)
         {
@@ -137,7 +137,6 @@ namespace Physics
             {
                 min = max - 1;
             }
-            minusV = velocity;
         }
         else if (velocity > 0)
         {
@@ -145,10 +144,9 @@ namespace Physics
             {
                 max = min + 1;
             }
-            posV = velocity;
         }
     }
-    inline void giveFriction(double& value, double friction)
+    constexpr void giveFriction(double& value, double friction)
     {
         if (value <= -friction)
         {
@@ -161,6 +159,70 @@ namespace Physics
         else
         {
             value = 0;
+        }
+    }
+    template<typename T>
+    constexpr T LineHitOnXFace(const T& pointA, T& pointB, double& xFace, const T& velocity)
+    {
+        double temp = (xFace - pointA.x) / velocity.x;
+        return T{ xFace, pointA.y + velocity.y * temp, pointA.z + velocity.z * temp };
+    }
+    template<typename T>
+    constexpr T LineHitOnYFace(const T& pointA, T& pointB, double& yFace, const T& velocity)
+    {
+        double temp = (yFace - pointA.y) / velocity.y;
+        return T{ pointA.x + velocity.x * temp, yFace, pointA.z + velocity.z * temp };
+    }
+    template<typename T>
+    constexpr T LineHitOnZFace(const T& pointA, T& pointB, double& zFace, const T& velocity)
+    {
+        double temp = (zFace - pointA.z) / velocity.z;
+        return T{ pointA.x + velocity.x * temp, pointA.y + velocity.y * temp, zFace };
+    }
+#define inFace(X,y,z) \
+    constexpr bool in##X##face(const Vector3& a, const Vector3& b, const Vector3& target)\
+    {\
+        return a.y < target.y && target.y < b.y && a.z < target.z && target.z < b.z;\
+    }
+    //inFace(X, y, z)
+    constexpr bool inXface(const Vector3& a, const Vector3& b, const Vector3& target)
+    {
+        return a.y < target.y && target.y < b.y && a.z < target.z && target.z < b.z;
+    }
+    constexpr bool inYface(const Vector3& a, const Vector3& b, const Vector3& target)
+    {
+        return a.x <= target.x && target.x <= b.x && a.z <= target.z && target.z <= b.z;
+    }
+    constexpr bool inZface(const Vector3& a, const Vector3& b, const Vector3& target)
+    {
+        return a.x < target.x && target.x < b.x && a.y < target.y && target.y < b.y;
+    }
+    //inFace(Z, x, y)
+    void checkInRange(Vector3& position)
+    {
+        if(position.x < 0)
+        {
+            position.x = 0;
+        }
+        else if(position.x > CubicRoom::mapLengthX + CubicRoom::offset.x)
+        {
+            position.x = CubicRoom::mapLengthX + CubicRoom::offset.x;
+        }
+        if(position.y < 0)
+        {
+            position.y = 0;
+        }
+        else if(position.y > CubicRoom::mapLengthY + CubicRoom::offset.y)
+        {
+            position.y = CubicRoom::mapLengthY + CubicRoom::offset.y;
+        }
+        if(position.z < 0)
+        {
+            position.z = 0;
+        }
+        else if(position.z > CubicRoom::mapLengthZ + CubicRoom::offset.z)
+        {
+            position.z = CubicRoom::mapLengthZ + CubicRoom::offset.z;
         }
     }
     void PhysicsFunction::physicsUpdate()
@@ -179,11 +241,13 @@ namespace Physics
 
         int minX = cube->indexX, maxX = cube->indexX, minY = cube->indexY, maxY = cube->indexY, minZ = cube->indexZ, maxZ = cube->indexZ;
         velocity.y -= Gravity;
-        Vector3 divideVelocity[2]{};//0 -> -,1 -> +
-        clampIndex(velocity.x, maxX, minX, cube->indexX, CubicRoom::mapLengthX, divideVelocity[0].x, divideVelocity[1].x);
-        clampIndex(velocity.y, maxY, minY, cube->indexY, CubicRoom::mapLengthY, divideVelocity[0].y, divideVelocity[1].y);
-        clampIndex(velocity.z, maxZ, minZ, cube->indexZ, CubicRoom::mapLengthZ, divideVelocity[0].z, divideVelocity[1].z);
+        clampIndex(velocity.x, maxX, minX, cube->indexX, CubicRoom::mapLengthX);
+        clampIndex(velocity.y, maxY, minY, cube->indexY, CubicRoom::mapLengthY);
+        clampIndex(velocity.z, maxZ, minZ, cube->indexZ, CubicRoom::mapLengthZ);
+        const Vector3& originPosition = GameLogic::WorldControler::player->position;
         Vector3 targetPosition = GameLogic::WorldControler::player->position + velocity;
+
+        GameLogic::WorldControler::onTheGround = false;
         for (int x = minX, y, z; x <= maxX; ++x)
         {
             for (y = minY; y <= maxY; ++y)
@@ -200,44 +264,100 @@ namespace Physics
                                 otherPosition + object->bound[0] - playerPhysics->bound[1],
                                 otherPosition + object->bound[1] - playerPhysics->bound[0]
                             };
-                            if (range[0] <= targetPosition && targetPosition <= range[1])
+                            double distance = Vector3::sqrLength(velocity);
+
+#define CheckOneFace(num,x,X)\
+                            if (0 <= (range[num].x - originPosition.x) * (targetPosition.x - range[num].x) && targetPosition.x != range[num].x)\
+                            {\
+                                Vector3 hitPoint = LineHitOn##X##Face(originPosition, targetPosition, range[num].x, velocity);\
+                                if (in##X##face(range[0], range[1], hitPoint))\
+                                {\
+                                    Vector3 temp = targetPosition;\
+                                    temp.x = hitPoint.x;\
+                                    double newDistance = Vector3::sqrDistance(temp, originPosition);\
+                                    if (newDistance < distance)\
+                                    {\
+                                        targetPosition.x = hitPoint.x;\
+                                        velocity.x = hitPoint.x - originPosition.x;\
+                                        distance = newDistance;\
+                                        GameLogic::WorldControler::onTheGround = true;\
+                                        goto NextObject;\
+                                    }\
+                                }\
+                            }
+
+                            if (velocity.y != 0)
                             {
-#define NO_BIGGER(a,b,c,d) \
-    if(a <= b && b < c){\
-        b = a;\
-        d = 0;\
-    }
-#define NO_SMALLER(a,b,c,d) \
-    if(a < b && b <= c){\
-        b = c;\
-        d = 0;\
-    }
-                                NO_BIGGER(range[0].x, targetPosition.x, otherPosition.x, divideVelocity[1].x);
-                                NO_BIGGER(range[0].y, targetPosition.y, otherPosition.y, divideVelocity[1].y);
-                                NO_BIGGER(range[0].z, targetPosition.z, otherPosition.z, divideVelocity[1].z);
-                                NO_SMALLER(otherPosition.x, targetPosition.x, range[1].x, divideVelocity[0].x);
-                                if (otherPosition.y < targetPosition.y && targetPosition.y <= range[1].y) {
-                                    targetPosition.y = range[1].y;
-                                    divideVelocity[0].y = 0;
-                                    GameLogic::WorldControler::onTheGround = true;
-                                }
-                                else
+                                CheckOneFace(0, y, Y);
+                                //CheckOneFace(1, y, Y);
+                                if (0 <= (range[1].y - originPosition.y) * (targetPosition.y - range[1].y) && targetPosition.y != range[1].y)
                                 {
-                                    GameLogic::WorldControler::onTheGround = false;
+                                    Vector3 hitPoint = LineHitOnYFace(originPosition, targetPosition, range[1].y, velocity);
+                                    if (inYface(range[0], range[1], hitPoint))
+                                    {
+                                        Vector3 temp = targetPosition;
+                                        temp.y = hitPoint.y;
+                                        double newDistance = Vector3::sqrDistance(temp, originPosition);
+                                        if (newDistance < distance)
+                                        {
+                                            targetPosition.y = hitPoint.y;
+                                            velocity.y = hitPoint.y - originPosition.y;
+                                            distance = newDistance;
+                                            GameLogic::WorldControler::onTheGround = true;
+                                            goto NextObject;
+                                        }
+                                    }
                                 }
-                                NO_SMALLER(otherPosition.z, targetPosition.z, range[1].z, divideVelocity[0].z);
+                            }
+                            if (velocity.x != 0)
+                            {
+                                CheckOneFace(0, x, X);
+                                CheckOneFace(1, x, X);
+                            }
+                            if (velocity.z != 0)
+                            {
+                                CheckOneFace(0, z, Z);
+                                CheckOneFace(1, z, Z);
                             }
                         }
+                    NextObject:
+                        ;
                     }
                 }
             }
         }
-        velocity = divideVelocity[0] + divideVelocity[1];
-        playerPhysics->logicObject->position = targetPosition;
-
-        double rad = glm::radians(GameLogic::WorldControler::playerForward[0]);
-        giveFriction(velocity.x, abs(sin(rad)) * Friction);
-        giveFriction(velocity.z, abs(cos(rad)) * Friction);
+        checkInRange(targetPosition);
+        if(targetPosition < cube->range[0] || cube->range[1] < targetPosition)
+        {
+            for (auto i = cube->list.begin(); i != cube->list.end(); ++i)
+            {
+                if(*i == playerPhysics)
+                {
+                    cube->list.erase(i);
+                    break;
+                }
+            }
+            GameLogic::WorldControler::player->setPosition(targetPosition);
+        }
+        else
+        {
+            playerPhysics->logicObject->position = targetPosition;
+        }
+        if (velocity.x != 0 || velocity.z != 0)
+        {
+            velocity.x -= velocity.x / 20;
+            velocity.z -= velocity.z / 20;
+            /*if(-Friction <= velocity.x && velocity.x <= Friction)
+            {
+                velocity.x = 0;
+            }
+            if(-Friction <= velocity.z && velocity.z <= Friction)
+            {
+                velocity.z = 0;
+            }*/
+            //giveFriction(velocity.x, abs(velocity.x * Friction));
+            //giveFriction(velocity.z, abs(velocity.z * Friction));
+        }
     }
     void PhysicsFunction::updateObject(GameLogic::LogicObject* object) {
         CubicRoom* cube = (CubicRoom*)object->physicsObject->physicsParent;
