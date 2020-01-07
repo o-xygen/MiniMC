@@ -345,8 +345,8 @@ namespace Physics
         }
         if (velocity.x != 0 || velocity.z != 0)
         {
-            velocity.x -= velocity.x / 20;
-            velocity.z -= velocity.z / 20;
+            velocity.x -= velocity.x / 15;
+            velocity.z -= velocity.z / 15;
             /*if(-Friction <= velocity.x && velocity.x <= Friction)
             {
                 velocity.x = 0;
