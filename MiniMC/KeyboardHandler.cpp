@@ -58,6 +58,6 @@ namespace GameLogic
             * direction;
         velocity.x = res.x * Physics::moveSpeed;
         velocity.z = res.z * Physics::moveSpeed;
-
+        Physics::isMoving = true;
     }
 }

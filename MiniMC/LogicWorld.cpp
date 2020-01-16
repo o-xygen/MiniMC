@@ -8,6 +8,7 @@ namespace GameLogic {
     Vector3 WorldControler::cameraOffset;
     vector<LogicObject*>WorldControler::dynamicObjects;
     void* WorldControler::meshMap;
+    Menu* WorldControler::menu = nullptr;
     //vector<LogicObject*>WorldControler::staticObjects;
     void WorldControler::initialize() {
         MeshMap* _meshMap = static_cast<MeshMap*>(meshMap);

@@ -9,6 +9,7 @@ namespace Physics
     const double Friction = 0.001;
     const float moveSpeed = 0.1f;
     const double jumpSpeed = 0.2;
+    bool isMoving = false;
     using GameLogic::Vector3;
     static bool checkIn(const Vector3& point, const Vector3& minBound, const Vector3& maxBound)
     {
@@ -345,8 +346,11 @@ namespace Physics
         }
         if (velocity.x != 0 || velocity.z != 0)
         {
-            velocity.x -= velocity.x / 15;
-            velocity.z -= velocity.z / 15;
+            static int counter = 0;
+            counter = (counter << 1 | isMoving) & 0xffff;
+            if (!counter) {
+                velocity.x = velocity.z = 0;
+            }
             /*if(-Friction <= velocity.x && velocity.x <= Friction)
             {
                 velocity.x = 0;
@@ -358,6 +362,7 @@ namespace Physics
             //giveFriction(velocity.x, abs(velocity.x * Friction));
             //giveFriction(velocity.z, abs(velocity.z * Friction));
         }
+        isMoving = false;
     }
     void PhysicsFunction::updateObject(GameLogic::LogicObject* object) {
         CubicRoom* cube = (CubicRoom*)object->physicsObject->physicsParent;

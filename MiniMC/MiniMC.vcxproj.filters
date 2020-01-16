@@ -46,6 +46,12 @@
     <Filter Include="头文件\DataType">
       <UniqueIdentifier>{b5206d91-d611-4f35-87ea-c5addf371f6c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Menu">
+      <UniqueIdentifier>{9593d0bc-75fa-448b-9da5-986439c275e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Menu">
+      <UniqueIdentifier>{50577b36-3c21-4aad-ae9a-eae2d907c50b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniMC.cpp">
@@ -107,6 +113,12 @@
     </ClCompile>
     <ClCompile Include="MouseHandler.cpp">
       <Filter>源文件\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>源文件\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.cpp">
+      <Filter>源文件\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +187,12 @@
     </ClInclude>
     <ClInclude Include="MouseHandler.h">
       <Filter>头文件\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>头文件\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>头文件\Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

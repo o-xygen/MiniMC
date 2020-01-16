@@ -160,6 +160,7 @@
     <ClCompile Include="GlobalVariable.cpp" />
     <ClCompile Include="KeyboardHandler.cpp" />
     <ClCompile Include="LogicWorld.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MeshMap.cpp" />
     <ClCompile Include="MouseHandler.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="error.cpp" />
     <ClCompile Include="LoadedTexture.cpp" />
+    <ClCompile Include="pause.cpp" />
     <ClCompile Include="PhysicsFunction.cpp" />
     <ClCompile Include="demoBlock.cpp" />
     <ClCompile Include="glad.c" />
@@ -183,6 +185,7 @@
     <ClInclude Include="json.hpp" />
     <ClInclude Include="KeyboardHandler.h" />
     <ClInclude Include="LogicWorld.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="MouseHandler.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="block.h" />
@@ -192,6 +195,7 @@
     <ClInclude Include="LoadedTexture.h" />
     <ClInclude Include="MeshMap.h" />
     <ClInclude Include="noise.h" />
+    <ClInclude Include="pause.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PhysicsFunction.h" />
     <ClInclude Include="demoBlock.h" />

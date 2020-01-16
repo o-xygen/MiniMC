@@ -15,6 +15,7 @@
 using json = nlohmann::json;
 Application* glutWrapper::app = nullptr;
 Shader* Application::blockShader = nullptr;
+bool pp = true;
 
 Application::Application(int width, int height) : windowWidth(width), windowHeight(height) {
 	glutWrapper::app = this;
@@ -50,6 +51,9 @@ void Application::setup(int argc, char* argv[])
 	initBlockMap();
 	// setup shaders
 	blockShader = new Shader("shaders/planeVert.glsl", "shaders/planeFrag.glsl");
+    GameLogic::WorldControler::menu = new Menu();
+    GameLogic::WorldControler::menu->setshader();
+    GameLogic::WorldControler::menu->setpause();
 }
 
 void Application::run() {
@@ -60,12 +64,22 @@ void Application::_redraw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    Physics::PhysicsFunction::physicsUpdate();
 
 	auto start = std::chrono::system_clock::now();
 
-    GameLogic::WorldControler::startRender();
-    meshMap->render();
+
+    if (pp) {
+        Physics::PhysicsFunction::physicsUpdate();
+        GameLogic::WorldControler::startRender();
+
+        glEnable(GL_DEPTH_TEST);
+        meshMap->render();
+        glDisable(GL_DEPTH_TEST);
+        GameLogic::WorldControler::menu->draw();
+    }
+    else {
+        GameLogic::WorldControler::menu->showpause();
+    }
 
 	auto after = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed_seconds = after - start;

@@ -2,6 +2,9 @@
 #include"Vector3.h"
 #include<vector>
 #include "Object.h"
+#include "Menu.h"
+
+extern bool pp;//for pause of menu
 namespace GameLogic {
     using std::vector;
     //it will be a single instance class in future.
@@ -10,6 +13,7 @@ namespace GameLogic {
         static void updateCamera();
     public:
         static void* meshMap;
+        static Menu* menu;
 
         static LogicObject* player;
         static bool onTheGround;

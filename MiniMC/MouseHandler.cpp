@@ -51,18 +51,26 @@ namespace GameLogic
     {
         if(button == GLUT_LEFT_BUTTON)
         {
-            /*
-            if(enter == false)
+            switch (state)
             {
-                enter = true;
-                lastX = x;
-                lastY = y;
+            case GLUT_DOWN:
+            {
+                int ret = GameLogic::WorldControler::menu->changepress(x, y);
+                if (ret == 0)
+                {
+                    pp = !pp;
+                    //function
+                }
+                else if (ret == 1)
+                {
+                    exit(0);
+                    //function
+                }
+                break;
             }
-            else
-            {
-                // TODO about UI and other logic
-                
-            }*/
+            case GLUT_UP:
+                GameLogic::WorldControler::menu->recoverpress();
+            }
         }
     }
     void MouseHandler::mouseEnter(int state)
