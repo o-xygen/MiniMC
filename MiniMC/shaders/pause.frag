@@ -1,9 +1,10 @@
 #version 330 core
 
-//uniform sampler2D tex;
+in vec4 a;
 
 void main(){
-	//vec2 coord = vec2(-5, 5);
-	//gl_FragColor = texture2D(tex, gl_TexCoord[0].st);
-	gl_FragColor = vec4(1,1,1,1);
+	if (a.x > -0.15 && a.y > (0.666*a.x - 0.1) && a.y < (-0.666*a.x + 0.1))
+		gl_FragColor = vec4(0,0,0,1);
+	else
+		gl_FragColor = vec4(1,1,1,1);
 }
