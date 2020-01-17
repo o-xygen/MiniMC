@@ -49,8 +49,9 @@ void Application::setup(int argc, char* argv[])
 		std::cout << "something went wrong!" << std::endl;
 		exit(-1);
 	}
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
-
+    glEnable(GL_BLEND);
 
 	initBlockMap();
     GameLogic::WorldControler::initialize();
@@ -110,9 +111,9 @@ void Application::_redraw()
 
         glEnable(GL_DEPTH_TEST);
         meshMap->render();
-        //drawNurbs();
         glDisable(GL_DEPTH_TEST);
         GameLogic::WorldControler::menu->draw();
+        //drawNurbs();
     }
     else {
         GameLogic::WorldControler::menu->showpause();
