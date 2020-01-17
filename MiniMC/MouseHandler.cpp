@@ -1,6 +1,8 @@
 #include <glut.h>
 #include"MouseHandler.h"
 #include "LogicWorld.h"
+#include "PhysicsFunction.h"
+#include "camera.h"
 
 namespace GameLogic
 {
@@ -55,6 +57,18 @@ namespace GameLogic
             {
             case GLUT_DOWN:
             {
+                if (pp) {// add mesh objects
+                    WorldControler::updateCamera();
+                    PhysicsComponent* hit = nullptr;
+                    Vector3* point = new Vector3{};
+                    if (Physics::PhysicsFunction::doRaycast(
+                        Vector3{ camera.headPosition.x, camera.headPosition.y, camera.headPosition.z },
+                        Vector3{ camera.lookTo.x - camera.headPosition.x, camera.lookTo.y - camera.headPosition.y, camera.lookTo.z - camera.headPosition.z },
+                        hit, point)) {
+                        cout << point->x << " " << point->y << " " << point->z << "\n";
+                        cout << "(" << hit->logicObject->position.x << "," << hit->logicObject->position.y << "," << hit->logicObject->position.z << " " << ")\n";
+                    }
+                }
                 int ret = GameLogic::WorldControler::menu->changepress(x, y);
                 if (ret == 0)
                 {

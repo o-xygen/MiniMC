@@ -10,7 +10,6 @@ namespace GameLogic {
     //it will be a single instance class in future.
     class WorldControler {
     private:
-        static void updateCamera();
     public:
         static void* meshMap;
         static Menu* menu;
@@ -24,5 +23,6 @@ namespace GameLogic {
         static vector<LogicObject*>staticObjects;
         static void initialize();
         static void startRender();
+        static void updateCamera();
     };
 }

@@ -33,7 +33,7 @@ void Application::setup(int argc, char* argv[])
 	glutDisplayFunc(glutWrapper::redraw);
 	glutReshapeFunc(glutWrapper::reshape);
     glutKeyboardFunc(GameLogic::KeyboardHandler::keyboardRegister);
-    //glutMouseFunc(GameLogic::MouseHandler::mouseClick);
+    glutMouseFunc(GameLogic::MouseHandler::mouseClick);
     //glutMotionFunc(GameLogic::MouseHandler::mouseRegister);
     glutPassiveMotionFunc(GameLogic::MouseHandler::mouseRegister);
     glutEntryFunc(GameLogic::MouseHandler::mouseEnter);
@@ -46,9 +46,9 @@ void Application::setup(int argc, char* argv[])
 	}
 	glEnable(GL_DEPTH_TEST);
 
-    //GameLogic::WorldControler::initialize(this);
 
 	initBlockMap();
+    GameLogic::WorldControler::initialize();
 	// setup shaders
 	blockShader = new Shader("shaders/planeVert.glsl", "shaders/planeFrag.glsl");
     GameLogic::WorldControler::menu = new Menu();

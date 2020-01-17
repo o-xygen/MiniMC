@@ -44,7 +44,7 @@ namespace GameLogic {
         player->setPosition(0.5, maxY + 1 + 0.5, 0.5);
         player->physicsObject->isRigid = true;
         player->physicsObject->bound[0] = { -0.2,-0.5,-0.2 };
-        player->physicsObject->bound[1] = { 0.2,0.5,0.2 };
+        player->physicsObject->bound[1] = { 0.2,1.5,0.2 };
 
         cameraOffset = { 0,1,0 };
         //objects.push_back(player);

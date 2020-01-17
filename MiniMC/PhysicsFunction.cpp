@@ -17,7 +17,7 @@ namespace Physics
         return clamp(minBound.x, point.x, maxBound.x) && clamp(minBound.y, point.y, maxBound.y) && clamp(minBound.z, point.z, maxBound.z);
     }
 
-    bool PhysicsFunction::doRaycast(const Vector3& startPoint, const Vector3& direction, const PhysicsComponent*& hitOne, const Vector3*& point)
+    bool PhysicsFunction::doRaycast(const Vector3& startPoint, const Vector3& direction, PhysicsComponent*& hitOne, Vector3*& point)
     {
         static Vector3 res;
         if (direction.x == 0 && direction.y == 0 && direction.z == 0)
@@ -31,18 +31,38 @@ namespace Physics
         Vector3 trueHitPoint[2], bound[2], *position;
 
         double minDelta = DBL_MAX;
-        for (int x = 0; x < CubicRoom::mapLengthX; ++x)
+        Vector3 origin = startPoint - CubicRoom::offset;
+        origin.x = round(origin.x);
+        origin.y = round(origin.y);
+        origin.z = round(origin.z);
+        int startX = (int)origin.x - 3, startY = (int)origin.y - 3, startZ = (int)origin.z - 3;
+        int endX = (int)origin.x + 3, endY = (int)origin.y + 3, endZ = (int)origin.z + 3;
+        if (startX < 0)
+            startX = 0;
+        if (startY < 0)
+            startY = 0;
+        if (startZ < 0)
+            startZ = 0;
+
+        if (endX > CubicRoom::mapLengthX)
+            endX = CubicRoom::mapLengthX;
+        if (endY > CubicRoom::mapLengthY)
+            endY = CubicRoom::mapLengthY;
+        if (endZ > CubicRoom::mapLengthZ)
+            endZ = CubicRoom::mapLengthZ;
+
+        for (int x = startX; x < endX; ++x)
         {
-            for (int y = 0; y < CubicRoom::mapLengthY; ++y)
+            for (int y = startY; y < endY; ++y)
             {
-                for (int z = 0; z < CubicRoom::mapLengthZ; ++z)
+                for (int z = startZ; z < endZ; ++z)
                 {
                     CubicRoom* cube = CubicRoom::map[x][y][z];
                     for (PhysicsComponent* unit : cube->list)
                     {
                         position = &unit->logicObject->position;
-                        bound[0] = *position - Vector3{ 0.5,0.5,0.5 };
-                        bound[1] = *position + Vector3{ 0.5,0.5,0.5 };
+                        bound[0] = *position + unit->bound[0];
+                        bound[1] = *position + unit->bound[1];
 
                         counter = 0;
                         if (direction.x != 0)
@@ -101,14 +121,14 @@ namespace Physics
                         }
 
                     getTwoHitPoint:
-                        if (counter == 1)
+                        if (counter < 2)
                             continue;
                         if (delta[0] > delta[1])
                         {
                             delta[0] = delta[1];
                             trueHitPoint[0] = trueHitPoint[1];
                         }
-                        if (delta[0] > minDelta)
+                        if (delta[0] < minDelta)
                         {
                             minDelta = delta[0];
                             res = trueHitPoint[0];

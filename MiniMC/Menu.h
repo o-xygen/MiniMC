@@ -8,7 +8,7 @@ class Menu
 {
 public:
 	Menu() {
-		paused = true;
+		paused = false;
 		for (int i = 0; i < 5; i++)
 			press[i] = false;
 	}

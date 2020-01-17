@@ -52,6 +52,12 @@
     <Filter Include="头文件\Menu">
       <UniqueIdentifier>{50577b36-3c21-4aad-ae9a-eae2d907c50b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\NurbsObjects">
+      <UniqueIdentifier>{12bd1117-7095-44cf-9508-6513c15a90f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\NurbsObjects">
+      <UniqueIdentifier>{356b61ba-28ba-4037-a760-eecff20dae69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniMC.cpp">
@@ -119,6 +125,24 @@
     </ClCompile>
     <ClCompile Include="pause.cpp">
       <Filter>源文件\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="nurbs_obj\bowl.cpp">
+      <Filter>源文件\NurbsObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="nurbs_obj\knots_control.cpp">
+      <Filter>源文件\NurbsObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="nurbs_obj\main.cpp">
+      <Filter>源文件\NurbsObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="nurbs_obj\pan.cpp">
+      <Filter>源文件\NurbsObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="nurbs_obj\spoon.cpp">
+      <Filter>源文件\NurbsObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="nurbs_obj\table.cpp">
+      <Filter>源文件\NurbsObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="pause.h">
       <Filter>头文件\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="nurbs_obj\obj.h">
+      <Filter>头文件\NurbsObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

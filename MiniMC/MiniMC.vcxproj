@@ -163,6 +163,12 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MeshMap.cpp" />
     <ClCompile Include="MouseHandler.cpp" />
+    <ClCompile Include="nurbs_obj\bowl.cpp" />
+    <ClCompile Include="nurbs_obj\knots_control.cpp" />
+    <ClCompile Include="nurbs_obj\main.cpp" />
+    <ClCompile Include="nurbs_obj\pan.cpp" />
+    <ClCompile Include="nurbs_obj\spoon.cpp" />
+    <ClCompile Include="nurbs_obj\table.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="CubicRoom.cpp" />
     <ClCompile Include="block.cpp" />
@@ -187,6 +193,7 @@
     <ClInclude Include="LogicWorld.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MouseHandler.h" />
+    <ClInclude Include="nurbs_obj\obj.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="BlockConst.h" />
