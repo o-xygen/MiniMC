@@ -126,22 +126,19 @@
     <ClCompile Include="pause.cpp">
       <Filter>源文件\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="nurbs_obj\bowl.cpp">
+    <ClCompile Include="bowl.cpp">
       <Filter>源文件\NurbsObjects</Filter>
     </ClCompile>
-    <ClCompile Include="nurbs_obj\knots_control.cpp">
+    <ClCompile Include="knots_control.cpp">
       <Filter>源文件\NurbsObjects</Filter>
     </ClCompile>
-    <ClCompile Include="nurbs_obj\main.cpp">
+    <ClCompile Include="spoon.cpp">
       <Filter>源文件\NurbsObjects</Filter>
     </ClCompile>
-    <ClCompile Include="nurbs_obj\pan.cpp">
+    <ClCompile Include="table.cpp">
       <Filter>源文件\NurbsObjects</Filter>
     </ClCompile>
-    <ClCompile Include="nurbs_obj\spoon.cpp">
-      <Filter>源文件\NurbsObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="nurbs_obj\table.cpp">
+    <ClCompile Include="pan.cpp">
       <Filter>源文件\NurbsObjects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -218,7 +215,7 @@
     <ClInclude Include="pause.h">
       <Filter>头文件\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="nurbs_obj\obj.h">
+    <ClInclude Include="obj.h">
       <Filter>头文件\NurbsObjects</Filter>
     </ClInclude>
   </ItemGroup>

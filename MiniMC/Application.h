@@ -10,6 +10,7 @@ public:
 	void initBlockMap();
 	void run();
 
+    static void addNurbs(int x, int y, int z,int type);
 	static Shader* blockShader;
 private:
 	int windowWidth, windowHeight;
@@ -17,7 +18,7 @@ private:
 	void _reshape(int w, int h);
 	void _idle();
 	friend glutWrapper;
-
+    static Application* instance;
 	MeshMap* meshMap;
 };
 

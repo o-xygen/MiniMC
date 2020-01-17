@@ -20,12 +20,18 @@ MeshMap::MeshMap()
 			map[x][y].heights.push_back(perlin.PerlinNoise(x, y) * 5);
 			map[x][y].blockID = GrassBlock;
 			auto it = blockPosMap.find(map[x][y].blockID);
+            vector<glm::vec3> list;
 			if (it == blockPosMap.end()) {
-				blockPosMap.insert({ map[x][y].blockID,  vector<glm::vec3>{glm::vec3{x,map[x][y].heights[0], y}} });
+                vector<glm::vec3> list = vector<glm::vec3>{ glm::vec3{x,map[x][y].heights[0], y} };
+				it = blockPosMap.insert({ map[x][y].blockID,  list }).first;
 			}
 			else {
 				it->second.push_back(glm::vec3{x,map[x][y].heights[0],y});
 			}
+            if (map[x][y].heights[0] != 0) {
+                map[x][y].heights.push_back(0);
+                it->second.push_back(glm::vec3{ x,0,y });
+            }
 		}
 	}
 
@@ -35,9 +41,10 @@ MeshMap::MeshMap()
 
 void MeshMap::render()
 {
-	Application::blockShader->use();
 	Application::blockShader->setMat4("projection", camera.getProjectionMat());
 	Application::blockShader->setMat4("view", camera.getViewMat());
+
+	Application::blockShader->use();
 	for (auto iter = blockPosMap.begin(); iter != blockPosMap.end(); ++iter) {
 		auto modelMats = new glm::mat4[iter->second.size()];
 		int amount = 0;

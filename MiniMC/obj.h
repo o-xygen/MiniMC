@@ -12,7 +12,7 @@ void showPoints(GLfloat surfaceVec[4][4][3]);
 // 绘制功能
 void drawSurface(GLfloat surfaceVec[4][4][3]);
 void drawSurface2(GLfloat surfaceVec[4][9][3], int x, int y, int z);
-
+void init();
 //spoon 0
 void draw_spoon(double x, double y, double z);
 

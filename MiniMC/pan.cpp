@@ -22,7 +22,7 @@ GLfloat borda_pan[4][9][3] = {
 // desenha todas as partes
 void draw_pan (double x, double y, double z) {
     glPushMatrix();
-    glTranslatef(x, y, z);
+        glTranslatef(x, y, z);
     	glColor4f(1, 1, 1, 0.4); 
     	drawSurface2(borda_pan, 4, 9, 3);
 	    

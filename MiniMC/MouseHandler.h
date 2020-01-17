@@ -11,5 +11,6 @@ namespace GameLogic
         static void mouseRegister(int x,int y);
         static void mouseClick(int button, int state, int x, int y);
         static void mouseEnter(int state);
+        static void(*addNurbs)(int, int, int, int);
     };
 }

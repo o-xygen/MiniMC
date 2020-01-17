@@ -12,10 +12,12 @@
 #include "KeyboardHandler.h"
 #include "MouseHandler.h"
 #include "PhysicsFunction.h"
+#include "obj.h"
 using json = nlohmann::json;
 Application* glutWrapper::app = nullptr;
 Shader* Application::blockShader = nullptr;
 bool pp = true;
+Application* Application::instance;
 
 Application::Application(int width, int height) : windowWidth(width), windowHeight(height) {
 	glutWrapper::app = this;
@@ -30,6 +32,7 @@ void Application::setup(int argc, char* argv[])
     GameLogic::MouseHandler::width = windowWidth;
     GameLogic::MouseHandler::height = windowHeight;
 	int windowHandle = glutCreateWindow("MiniMC");
+    init();//nurbs init
 	glutDisplayFunc(glutWrapper::redraw);
 	glutReshapeFunc(glutWrapper::reshape);
     glutKeyboardFunc(GameLogic::KeyboardHandler::keyboardRegister);
@@ -37,6 +40,8 @@ void Application::setup(int argc, char* argv[])
     //glutMotionFunc(GameLogic::MouseHandler::mouseRegister);
     glutPassiveMotionFunc(GameLogic::MouseHandler::mouseRegister);
     glutEntryFunc(GameLogic::MouseHandler::mouseEnter);
+    instance = this;
+    GameLogic::MouseHandler::addNurbs = addNurbs;
     //glutKeyboardUpFunc();
 	glutIdleFunc(glutWrapper::idle);
 
@@ -59,6 +64,37 @@ void Application::setup(int argc, char* argv[])
 void Application::run() {
 	glutMainLoop();
 }
+static vector<pair<glm::vec3, int>> nurbs{};
+void Application::addNurbs(int x, int y, int z, int type) {
+    ++y;
+    for (int y0 : instance->meshMap->map[x][z].heights) {
+        if (y0 == y)
+            return;
+    }
+    nurbs.push_back(pair <vec3, int> {vec3{ x,y,z }, type});
+}
+static void drawNurbs() {
+    for (pair<glm::vec3, int> object : nurbs) {
+        switch (object.second) {
+        case 0: {
+            draw_spoon(object.first.x + 0.5, object.first.y + 0.5, object.first.z + 0.5);
+            break;
+        }
+        case 1: {
+
+            break;
+        }
+        case 2: {
+
+            break;
+        }
+        case 3: {
+
+            break;
+        }
+        }
+    }
+}
 
 void Application::_redraw()
 {
@@ -74,6 +110,7 @@ void Application::_redraw()
 
         glEnable(GL_DEPTH_TEST);
         meshMap->render();
+        //drawNurbs();
         glDisable(GL_DEPTH_TEST);
         GameLogic::WorldControler::menu->draw();
     }

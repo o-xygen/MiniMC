@@ -1,7 +1,7 @@
 #include <glut.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "nurbs_objs/obj.h"
+#include "obj.h"
 
 float rotate_y = 0;
 float rotate_x = 0;//wasd控制视角转动

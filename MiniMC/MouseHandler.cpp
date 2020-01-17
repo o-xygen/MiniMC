@@ -9,6 +9,7 @@ namespace GameLogic
     int MouseHandler::lastX, MouseHandler::lastY;
     int MouseHandler::width, MouseHandler::height;
     bool MouseHandler::enter = false,MouseHandler::first = false;
+    void(*MouseHandler::addNurbs)(int, int, int, int) = nullptr;
     const static double xMotion = 1.0,yMotion = 1.0;
     void MouseHandler::mouseRegister(int x, int y)
     {
@@ -65,8 +66,9 @@ namespace GameLogic
                         Vector3{ camera.headPosition.x, camera.headPosition.y, camera.headPosition.z },
                         Vector3{ camera.lookTo.x - camera.headPosition.x, camera.lookTo.y - camera.headPosition.y, camera.lookTo.z - camera.headPosition.z },
                         hit, point)) {
-                        cout << point->x << " " << point->y << " " << point->z << "\n";
-                        cout << "(" << hit->logicObject->position.x << "," << hit->logicObject->position.y << "," << hit->logicObject->position.z << " " << ")\n";
+                        addNurbs(floor(hit->logicObject->position.x), floor(hit->logicObject->position.y), floor(hit->logicObject->position.z), 0);
+                        //cout << point->x << " " << point->y << " " << point->z << "\n";
+                        //cout << "(" << hit->logicObject->position.x << "," << hit->logicObject->position.y << "," << hit->logicObject->position.z << " " << ")\n";
                     }
                 }
                 int ret = GameLogic::WorldControler::menu->changepress(x, y);
