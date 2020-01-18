@@ -31,7 +31,17 @@ GLfloat verticesm[] = {
 	0.86 + 0.05, 0.77, 0,
 	0.89 + 0.05, 0.77, 0,
 	0.86 + 0.05, 0.65, 0,
-	0.89 + 0.05, 0.65, 0
+	0.89 + 0.05, 0.65, 0，
+	
+	-0.05, 0.02, 0,
+	0.05, 0.02, 0,
+	-0.05, -0.02, 0,
+	0.05, -0.02, 0,
+	
+	0.02, 0.05, 0,
+	-0.02, 0.05, 0,
+	0.02, -0.05, 0,
+	- 0.02, -0.05, 0
 };
 
 GLuint indicesm[] = {
@@ -54,7 +64,12 @@ GLuint indicesm[] = {
 		21,22,23,
 
 		24, 25, 26,
-		25,26,27
+		25,26,27,
+
+		28,29,30,
+		29,30,31,
+		32,33,34,
+		33,34,35
 };
 
 GLuint VAO2, VBO2, EBO2;
@@ -74,7 +89,7 @@ void Menu::draw()
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(VAO2);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, 48, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
 
