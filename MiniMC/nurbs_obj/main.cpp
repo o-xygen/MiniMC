@@ -1,25 +1,45 @@
+#pragma comment (lib,"glew32.lib")
+#include <cstdlib>
+#define _GLEW_STATIC
+#include "GL/glew.h"
 #include <glut.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "textfile.h"
+#include <iostream>
 #include "obj.h"
 
-float rotate_y = 0;
-float rotate_x = 0;//wasd控制视角转动
 
-int flagPoints = 0;//键盘‘c’ 控制是否显示控制点
+float fTranslate;
+float fRotate;
+float fScale = 1.0f;	// set inital scale value to 1.0f
+
+bool bAnim = false;
+bool bWire = false;
+
+bool teapotRotate = false;
+GLint normalLength;
+float eye[] = { 0, 0, 8 };
+float center[] = { 0, 0, 0 };
+GLint cameraPosition;
+float normalOffset = 0.05;
+
+int wHeight = 0;
+int wWidth = 0;
+GLuint p1;
+
+float rotate_y = 0;
+float rotate_x = -45;//wasd控制视角转动
 GLUnurbsObj* theNurb;
 
-void display(void) {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
+void _Draw_Scene()
+{
+	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glUseProgram(p1);
 
 	glPushMatrix();
 	//摄像机
 	gluLookAt(0, 0, 10, 0, 0, 0, 0, 1, 0);
-	//wasd控制视角
 	glRotatef(rotate_x, 1.0, 0.0, 0.0);
 	glRotatef(rotate_y, 0.0, 0.0, 1.0);
-
 	//table
 	draw_table();
 	//spoon
@@ -32,66 +52,51 @@ void display(void) {
 	glTranslatef(0, 0, 0.8);
 	draw_bowl();
 	glPopMatrix();
-	//pan
-	glPushMatrix();
-	glTranslatef(-3.0, -3.0, 0.7);
-	glRotatef(180, 0, 1, 0);
-	draw_pan();
-	glPopMatrix();
 
 	glPopMatrix();
-	glFlush();
 }
 
-void nurbsError(GLenum errorCode) {
-	const GLubyte* estring;
-	estring = gluErrorString(errorCode);
-	fprintf(stderr, "Nurbs Error: %s\n", estring);
-	exit(0);
+void _updateView(int width, int height)
+{
+	glViewport(0, 0, width, height);						// Reset The Current Viewport
+
+	glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
+	glLoadIdentity();									// Reset The Projection Matrix
+
+	float whRatio = (GLfloat)width / (GLfloat)height;
+
+	gluPerspective(40.0f, 1.0f, 1.0f, 800.0f);
+
+	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
 }
 
-void init(void) {
-	GLfloat Ambiente[4] = { 0.2, 0.2, 0.2, 1.0 };
-	GLfloat Difusa[4] = { 0.7, 0.6, 0.6, 1.0 };
-	GLfloat Especular[4] = { 0.8, 0.8, 0.8, 1.0 };
-	GLfloat Position[4] = { 10.0, 10.0, 0, 1.0 };
+void _reshape(int width, int height)
+{
+	if (height == 0)										// Prevent A Divide By Zero By
+	{
+		height = 1;										// Making Height Equal One
+	}
 
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, Ambiente);
-	glLightfv(GL_LIGHT1, GL_AMBIENT, Ambiente);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, Difusa);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, Especular);
-	glLightfv(GL_LIGHT1, GL_POSITION, Position);
+	wHeight = height;
+	wWidth = width;
 
-	glEnable(GL_COLOR_MATERIAL);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT1);
-
-	theNurb = gluNewNurbsRenderer();
-	gluNurbsProperty(theNurb, GLU_SAMPLING_TOLERANCE, 25.0);
-	gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_FILL);
-	gluNurbsCallback(theNurb, GLU_ERROR, (GLvoid(*)()) nurbsError);
+	_updateView(wHeight, wWidth);
 }
 
-void reshape(int w, int h) {
-	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(45.0, (GLdouble)w / (GLdouble)h, 1.0, 500.0);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glTranslatef(0.0, 0.0, -5.0);
+void _idle()
+{
+	glutPostRedisplay();
 }
 
-void keyboard(unsigned char key, int x, int y) {
-	switch (key) {
-	case 'c':
-	case 'C':
-		flagPoints = !flagPoints;
-		glutPostRedisplay();
-		break;
-	case 27:
-		exit(0);
-		break;
+float delta = 0.1f;
+void _key(unsigned char k, int x, int y)
+{
+	switch (k)
+	{
+	case 'q': {exit(0); break; }
+
+	case ' ': {bAnim = !bAnim; break; }
+
 	case 'd':
 		rotate_y += 5;
 		break;
@@ -104,26 +109,116 @@ void keyboard(unsigned char key, int x, int y) {
 	case 's':
 		rotate_x -= 5;
 		break;
-	default:
+	case 'z': {//todo
+		eye[2] -= delta;
+		center[2] -= delta;
 		break;
+	}
+	case 'c': {//todo
+		eye[2] += delta;
+		center[2] += delta;
+		break;
+	}
+
 	}
 }
 
-void idle(void) {
-	glutPostRedisplay();
+
+void _redraw()
+{
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();									// Reset The Current Modelview Matrix
+
+	gluLookAt(eye[0], eye[1], eye[2],
+		center[0], center[1], center[2],
+		0, 1, 0);
+
+	glEnable(GL_DEPTH_TEST);
+
+	//	glTranslatef(0.0f, 0.0f,-6.0f);			// Place the triangle at Center
+	glRotatef(fRotate, 0, 1.0f, 0);			// Rotate around Y axis
+	glMatrixMode(GL_MODELVIEW);
+	_Draw_Scene();						// Draw Scene
+
+	if (bAnim) fRotate += 0.5f;
+
+	//todo; hint: when you want to rotate the teapot, you may like to add another line here =)
+	glutSwapBuffers();
 }
 
-int main(int argc, char** argv) {
+void _shaderInit()
+{
+	GLuint v, f;
+	char* vs = NULL, * fs = NULL;
+	v = glCreateShader(GL_VERTEX_SHADER);
+	f = glCreateShader(GL_FRAGMENT_SHADER);
+	vs = textFileRead("ivory.vert");
+	fs = textFileRead("ivory.frag");
+	const char* vv = vs;
+	const char* ff = fs;
+	glShaderSource(v, 1, &vv, NULL);
+	glShaderSource(f, 1, &ff, NULL);
+	free(vs);
+	free(fs);
+	glCompileShader(v);
+	glCompileShader(f);
+
+	GLint success;
+	GLchar infoLog[512];
+	glGetShaderiv(v, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(v, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+		return;
+	}
+	glGetShaderiv(f, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(f, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+		return;
+	}
+
+	p1 = glCreateProgram();
+	glAttachShader(p1, v);
+	glAttachShader(p1, f);
+	glLinkProgram(p1);
+
+	glGetProgramiv(p1, GL_LINK_STATUS, &success);
+	if (!success) {
+		glGetProgramInfoLog(p1, 512, NULL, infoLog);
+	}
+
+
+
+}
+
+void _nurbsInit() {
+	theNurb = gluNewNurbsRenderer();
+	gluNurbsProperty(theNurb, GLU_SAMPLING_TOLERANCE, 25.0);
+	gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_FILL);
+}
+int main(int argc, char* argv[])
+{
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(500, 500);
-	glutInitWindowPosition(100, 100);
-	glutCreateWindow(argv[0]);
-	init();
-	glutIdleFunc(idle);
-	glutReshapeFunc(reshape);
-	glutDisplayFunc(display);
-	glutKeyboardFunc(keyboard);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+	glutInitWindowSize(480, 480);
+	int windowHandle = glutCreateWindow("Simple GLUT App");
+
+	glutDisplayFunc(_redraw);
+	glutReshapeFunc(_reshape);
+	glutKeyboardFunc(_key);
+	glutIdleFunc(_idle);
+
+	glEnable(GL_CULL_FACE);
+	glewInit();
+	_nurbsInit();
+	_shaderInit();
+
 	glutMainLoop();
 	return 0;
 }
+
+

@@ -19,7 +19,7 @@ GLfloat borda_bowl[4][9][3] = {
     }
 };
 
-GLfloat borda_bowl_esp[4][9][3] = {
+GLfloat borda_bowl_back[4][9][3] = {
     {
         { -3.0, 0.0, 1.0 }, { -3.0, 3.0, 1.0 }, { 0.0, 3.0, 1.0 }, { 3.0, 3.0, 1.0 }, { 3.0, 0.0, 1.0 },
         { 3.0, -3.0, 1.0 }, { 0.0, -3.0, 1.0 }, { -3.0, -3.0, 1.0 }, { -3.0, 0.0, 1.0 }
@@ -57,7 +57,7 @@ GLfloat fundo_bowl[4][4][3] = {
     }
 };
 
-GLfloat fundo_bowl_esp[4][4][3] = {
+GLfloat fundo_bowl_back[4][4][3] = {
     {
         { -1.0, 1.0, -1.0},    { -0.5, 1.5, -1.0},
         { 0.5, 1.5, -1.0},     { 1.0, 1.0, -1.0}
@@ -81,7 +81,7 @@ bowl_diffuse[] = { 0.3, 0.3, 0.3, 1.0 },
 bowl_specular[] = { .2, .2, .2, 1.0 },
 bowl_shininess[] = { 20.0 };
 
-void draw_bowl (double x, double y, double z) {
+void draw_bowl (void) {
   glColor4f(0.7, 0.7, 0.7, .4);
   glEnable (GL_BLEND);
   glBlendFunc (GL_ONE, GL_ONE);
@@ -92,13 +92,19 @@ void draw_bowl (double x, double y, double z) {
   glMaterialfv(GL_FRONT, GL_SHININESS, bowl_shininess);
 
   glPushMatrix();
-    glTranslatef(x, y, z);
     glScalef(0.5, 0.5, 0.5);
    
     glPushMatrix();
       drawSurface2(borda_bowl, 4, 9, 3);
       glColor4f(0.7, 0.7, 0.7, .4);
     glPopMatrix();
+
+	glPushMatrix();
+		glRotatef(180, 0, 1, 0);
+		glRotatef(180, 0, 0, 1);
+		drawSurface2(borda_bowl_back, 4, 9, 3);
+		glColor4f(0.7, 0.7, 0.7, .4);
+	glPopMatrix();
 
     glPushMatrix();
       glScalef(0.9, 0.9, 1);
@@ -109,7 +115,7 @@ void draw_bowl (double x, double y, double z) {
       glPushMatrix();
         glRotatef(180, 0, 1, 0);
         glTranslatef(0, 0, 0.005);
-        drawSurface(fundo_bowl_esp);
+        drawSurface(fundo_bowl_back);
         glColor4f(0.7, 0.7, 0.7, .4);
       glPopMatrix();
 

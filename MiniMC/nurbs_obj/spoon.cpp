@@ -1,6 +1,6 @@
 #include "obj.h"
 
-GLfloat concha_spoon[4][4][3] = {
+GLfloat head_spoon[4][4][3] = {
     {
         { -0.5, 0.80, 0},    { -0.15, 1.25, 0}, 
         { 0.15, 1.25, 0},     { 0.5, 0.80, 0}
@@ -19,7 +19,7 @@ GLfloat concha_spoon[4][4][3] = {
     }
 };
 
-GLfloat concha_spoon_esp[4][4][3] = {
+GLfloat head_spoon_back[4][4][3] = {
     {
         { -0.5, 0.80, 0},    { -0.15, 1.25, 0}, 
         { 0.15, 1.25, 0},     { 0.5, 0.80, 0}
@@ -38,7 +38,7 @@ GLfloat concha_spoon_esp[4][4][3] = {
     }
 };
 
-GLfloat alca_spoon[4][4][3] = {
+GLfloat handle_spoon[4][4][3] = {
     {
         { -0.10, 1.5, 0},    { -0.05, 1.5, 0}, 
         { 0.05, 1.5, 0},     { 0.10, 1.5, 0}
@@ -57,7 +57,7 @@ GLfloat alca_spoon[4][4][3] = {
     }
 };
 
-GLfloat alca_spoon_esp[4][4][3] = {
+GLfloat handle_spoon_back[4][4][3] = {
     {
         { -0.10, 1.5, 0},    { -0.05, 1.5, 0}, 
         { 0.05, 1.5, 0},     { 0.10, 1.5, 0}
@@ -83,29 +83,40 @@ spoon_shininess[] = { 20.0 };
 
 
 // 绘制小物件
-void draw_spoon(double x,double y,double z) {
+void draw_spoon(void) {
     glColor4f(0.4, 0.4, 0.4, 0.4); // 银灰色
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, spoon_diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR, spoon_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, spoon_shininess);
 
-
     glPushMatrix();
-    glTranslatef(x, y, z); //1.5 + 1.25
         glScalef(0.8, 0.8, 0.8);
-        // alca
+        // handle
         glPushMatrix();
             glTranslatef(0, -2.67, 0); //1.5 + 1.25
-            drawSurface(alca_spoon);
+            drawSurface(handle_spoon);
             glColor4f(0.4, 0.4, 0.4, 0.4);
         glPopMatrix();
 
-        // concha
+		glPushMatrix();
+			glTranslatef(0, -2.67, 0);
+			glRotatef(180, 0, 1, 0);
+			glTranslatef(0, 0, 0.01);
+			drawSurface(handle_spoon_back);
+			glColor4f(0.4, 0.4, 0.4, 0.4);
+		glPopMatrix();
+
+        // head
         glPushMatrix();
-            drawSurface(concha_spoon);
+            drawSurface(head_spoon);
             glColor4f(0.4, 0.4, 0.4, 0.4);
         glPopMatrix();
+		glPushMatrix();
+			glRotatef(180, 0, 1, 0);
+			glTranslatef(0, 0, 0.01);
+			drawSurface(head_spoon_back);
+		glPopMatrix();
         
     glPopMatrix();
 }
