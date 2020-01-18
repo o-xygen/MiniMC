@@ -41,10 +41,10 @@ MeshMap::MeshMap()
 
 void MeshMap::render()
 {
+	Application::blockShader->use();
 	Application::blockShader->setMat4("projection", camera.getProjectionMat());
 	Application::blockShader->setMat4("view", camera.getViewMat());
 
-	Application::blockShader->use();
 	for (auto iter = blockPosMap.begin(); iter != blockPosMap.end(); ++iter) {
 		auto modelMats = new glm::mat4[iter->second.size()];
 		int amount = 0;
