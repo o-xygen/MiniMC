@@ -33,25 +33,9 @@ void nurbsError(GLenum errorCode) {
     exit(0);
 }
 void init() {
-    GLfloat Ambiente[4] = { 0.2, 0.2, 0.2, 1.0 };
-    GLfloat Difusa[4] = { 0.7, 0.6, 0.6, 1.0 };
-    GLfloat Especular[4] = { 0.8, 0.8, 0.8, 1.0 };
-    GLfloat Position[4] = { 10.0, 10.0, 0, 1.0 };
-
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, Ambiente);
-    glLightfv(GL_LIGHT1, GL_AMBIENT, Ambiente);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, Difusa);
-    glLightfv(GL_LIGHT1, GL_SPECULAR, Especular);
-    glLightfv(GL_LIGHT1, GL_POSITION, Position);
-
-    glEnable(GL_COLOR_MATERIAL);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT1);
-
     theNurb = gluNewNurbsRenderer();
     gluNurbsProperty(theNurb, GLU_SAMPLING_TOLERANCE, 25.0);
     gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_FILL);
-    gluNurbsCallback(theNurb, GLU_ERROR, (GLvoid(*)()) nurbsError);
 }
 void drawSurface2(GLfloat surfaceVec[4][9][3], int x, int y, int z) {
 		int u, v;

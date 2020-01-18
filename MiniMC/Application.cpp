@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "textfile.h"
 #include <glad/glad.h>
 #include <glut.h>
 #include "demoBlock.h"
@@ -13,12 +14,58 @@
 #include "MouseHandler.h"
 #include "PhysicsFunction.h"
 #include "obj.h"
+#include "Object.h"
 using json = nlohmann::json;
 Application* glutWrapper::app = nullptr;
 Shader* Application::blockShader = nullptr;
 bool pp = true;
 Application* Application::instance;
 
+GLuint p1;
+void _shaderInit()
+{
+    GLuint v, f;
+    char* vs = NULL, * fs = NULL;
+    v = glCreateShader(GL_VERTEX_SHADER);
+    f = glCreateShader(GL_FRAGMENT_SHADER);
+    vs = textFileRead("ivory.vert");
+    fs = textFileRead("ivory.frag");
+    const char* vv = vs;
+    const char* ff = fs;
+    glShaderSource(v, 1, &vv, NULL);
+    glShaderSource(f, 1, &ff, NULL);
+    free(vs);
+    free(fs);
+    glCompileShader(v);
+    glCompileShader(f);
+
+    GLint success;
+    GLchar infoLog[512];
+    glGetShaderiv(v, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        glGetShaderInfoLog(v, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        return;
+    }
+    glGetShaderiv(f, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        glGetShaderInfoLog(f, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        return;
+    }
+
+    p1 = glCreateProgram();
+    glAttachShader(p1, v);
+    glAttachShader(p1, f);
+    glLinkProgram(p1);
+
+    glGetProgramiv(p1, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(p1, 512, NULL, infoLog);
+    }
+}
 Application::Application(int width, int height) : windowWidth(width), windowHeight(height) {
 	glutWrapper::app = this;
 	meshMap = new MeshMap();
@@ -32,7 +79,6 @@ void Application::setup(int argc, char* argv[])
     GameLogic::MouseHandler::width = windowWidth;
     GameLogic::MouseHandler::height = windowHeight;
 	int windowHandle = glutCreateWindow("MiniMC");
-    init();//nurbs init
 	glutDisplayFunc(glutWrapper::redraw);
 	glutReshapeFunc(glutWrapper::reshape);
     glutKeyboardFunc(GameLogic::KeyboardHandler::keyboardRegister);
@@ -57,6 +103,8 @@ void Application::setup(int argc, char* argv[])
     GameLogic::WorldControler::initialize();
 	// setup shaders
 	blockShader = new Shader("shaders/planeVert.glsl", "shaders/planeFrag.glsl");
+    init();//nurbs init
+    _shaderInit();
     GameLogic::WorldControler::menu = new Menu();
     GameLogic::WorldControler::menu->setshader();
     GameLogic::WorldControler::menu->setpause();
@@ -72,9 +120,17 @@ void Application::addNurbs(int x, int y, int z, int type) {
         if (y0 == y)
             return;
     }
+
+    GameLogic::LogicObject* logicObject = new GameLogic::LogicObject(true);
+    logicObject->setPosition(x + 0.5, y + 0.5, z + 0.5);
+    logicObject->physicsObject->isRigid = true;
+    logicObject->physicsObject->bound[0] = { -0.5,-0.5,-0.5 };
+    logicObject->physicsObject->bound[1] = { 0.5,0.5,0.5 };
+    instance->meshMap->blockPosMap.begin()->second.push_back(vec3{ x, y, z });
     nurbs.push_back(pair <vec3, int> {vec3{ x,y,z }, type});
 }
 static void drawNurbs() {
+    glUseProgram(p1);
     for (pair<glm::vec3, int> object : nurbs) {
         switch (object.second) {
         case 0: {
@@ -111,9 +167,13 @@ void Application::_redraw()
 
         glEnable(GL_DEPTH_TEST);
         meshMap->render();
+
         glDisable(GL_DEPTH_TEST);
         GameLogic::WorldControler::menu->draw();
+
+        //glEnable(GL_DEPTH_TEST);
         //drawNurbs();
+
     }
     else {
         GameLogic::WorldControler::menu->showpause();

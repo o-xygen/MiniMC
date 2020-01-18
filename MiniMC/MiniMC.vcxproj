@@ -23,7 +23,7 @@
     <ProjectGuid>{E0B30CF2-5DEC-4FD5-AD0B-A6C7B4A06253}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>MiniMC</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -181,6 +181,7 @@
     <ClCompile Include="spoon.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="table.cpp" />
+    <ClCompile Include="textfile.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="Vector3.cpp" />
   </ItemGroup>
@@ -208,6 +209,7 @@
     <ClInclude Include="CubicRoom.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="textfile.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="Vector3.h" />
   </ItemGroup>

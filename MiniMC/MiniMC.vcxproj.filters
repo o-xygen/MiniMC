@@ -141,6 +141,9 @@
     <ClCompile Include="pan.cpp">
       <Filter>源文件\NurbsObjects</Filter>
     </ClCompile>
+    <ClCompile Include="textfile.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="obj.h">
       <Filter>头文件\NurbsObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="textfile.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

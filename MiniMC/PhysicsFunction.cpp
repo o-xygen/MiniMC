@@ -367,7 +367,7 @@ namespace Physics
         if (velocity.x != 0 || velocity.z != 0)
         {
             static int counter = 0;
-            counter = (counter << 1 | isMoving) & 0xffff;
+            counter = (counter << 1 | isMoving) & 0xfff;
             if (!counter) {
                 velocity.x = velocity.z = 0;
             }
